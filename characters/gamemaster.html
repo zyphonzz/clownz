@@ -21,6 +21,7 @@
       height: 100vh;
       pointer-events: none;
       z-index: 9999;
+      animation: flicker 0.15s infinite; /* Apply flicker to glitch canvas */
     }
 
     /* VHS overlay styles */
@@ -35,7 +36,6 @@
       background: rgba(255, 255, 255, 0.1); /* Semi-transparent overlay */
       backdrop-filter: blur(3px); /* Apply blur effect */
       mix-blend-mode: overlay;
-      animation: flicker 0.15s infinite;
     }
 
     @keyframes flicker {
@@ -146,7 +146,7 @@
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       // Apply Gaussian blur to the entire canvas
-      ctx.filter = 'blur(0.5px)'; // Adjusted blur intensity
+      ctx.filter = 'blur(3px)'; // Adjusted blur intensity
 
       // Draw random horizontal glitches
       for (let i = 0; i < 5; i++) {
