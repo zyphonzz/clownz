@@ -2,73 +2,65 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>.::clownz::.</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.cdnfonts.com/css/vcr-osd-mono" rel="stylesheet">
+  <title>Gamemaster Note</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #111;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: 'Courier New', monospace;
+    }
+
+    .parchment {
+      background: url('note.png') no-repeat center center;
+      background-size: contain;
+      width: 800px;
+      height: 600px;
+      position: relative;
+    }
+
+    .scroll-area {
+      position: absolute;
+      top: 100px;
+      left: 50px;
+      right: 50px;
+      bottom: 50px;
+      overflow-y: auto;
+      padding-right: 10px;
+      font-size: 16px;
+      line-height: 1.4;
+      color: #000;
+    }
+
+    /* Optional custom scrollbar styling */
+    .scroll-area::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .scroll-area::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 0, 0, 0.5);
+      border-radius: 3px;
+    }
+  </style>
 </head>
 <body>
-  
+  <div class="parchment">
+    <div class="scroll-area">
+      <!-- Paste your text below this line -->
+      <p>Currently/1994: 38, born August 14th 1956.ˏˏ</p>
 
-  <div>image here</div>
-  <div>"gamemaster likes young girls"</div>
-  <div>fh</div>
-  <canvas id="bgCanvas"></canvas>
-  <canvas id="trailCanvas"></canvas>
+      <p>Gamemaster is the creator and the person whom has made and started the game or another name for it, Clown Therapy !!</p>
 
-  <script>
-    const bgCanvas = document.getElementById("bgCanvas");
-    const bgCtx = bgCanvas.getContext("2d");
+      <p>::</p>
 
-    const trailCanvas = document.getElementById("trailCanvas");
-    const trailCtx = trailCanvas.getContext("2d");
+      <p>Gamemaster was not treated well at home, but doesn’t have many memories as he estranged and sold off to the circus at a very young age which we do not know of... [continue your pasted content here]</p>
 
-    let w, h;
-    function resize() {
-      w = bgCanvas.width = trailCanvas.width = window.innerWidth;
-      h = bgCanvas.height = trailCanvas.height = window.innerHeight;
-    }
-    window.addEventListener("resize", resize);
-    resize();
-
-    function drawNoise() {
-      const imageData = bgCtx.createImageData(w, h);
-      const buffer = new Uint32Array(imageData.data.buffer);
-      for (let i = 0; i < buffer.length; i++) {
-        buffer[i] = Math.random() < 0.012 ? 0xffffffff : 0xff000000;
-      }
-      bgCtx.putImageData(imageData, 0, 0);
-    }
-    setInterval(drawNoise, 60);
-
-    let trail = [];
-    document.addEventListener("mousemove", (e) => {
-      trail.push({
-        x: e.clientX,
-        y: e.clientY,
-        life: 1,
-        size: Math.random() * 10 + 2,
-        color: `hsl(${Math.random()*360}, 100%, 50%)`,
-        dx: (Math.random() - 0.5) * 1.5,
-        dy: (Math.random() - 0.5) * 1.5
-      });
-    });
-
-    function drawTrail() {
-      trailCtx.clearRect(0, 0, w, h);
-      for (let i = 0; i < trail.length; i++) {
-        const p = trail[i];
-        p.x += p.dx;
-        p.y += p.dy;
-        p.life -= 0.015;
-
-        trailCtx.fillStyle = `rgba(${p.color.match(/\d+/g).join(",")},${p.life})`;
-        trailCtx.fillRect(p.x, p.y, p.size, p.size);
-      }
-
-      trail = trail.filter(p => p.life > 0);
-      requestAnimationFrame(drawTrail);
-    }
-    drawTrail();
-  </script>
+      <!-- End of your text -->
+    </div>
+  </div>
 </body>
 </html>
