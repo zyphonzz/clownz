@@ -13,60 +13,76 @@
       font-family: 'Courier New', monospace;
     }
 
-    .background {
+    .container {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #000;
+    }
+
+    .note-wrapper {
+      position: relative;
+      width: 60vw;
+      max-width: 800px;
+      aspect-ratio: 1.25; /* Maintain parchment shape */
       background-image: url('note.png');
       background-size: contain;
       background-repeat: no-repeat;
       background-position: center;
-      width: 100vw;
-      height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
     .text-box {
-      width: 40%;
-      height: 50%;
+      width: 70%;
+      height: 70%;
       overflow-y: auto;
       color: #000;
       font-size: 14px;
       line-height: 1.4;
-      background: rgba(255, 255, 255, 0); /* transparent */
-      padding: 10px 20px;
+      text-align: left;
+      padding: 10px;
+      background-color: rgba(255, 255, 255, 0); /* Invisible background */
     }
 
     .text-box::-webkit-scrollbar {
-      width: 5px;
+      width: 6px;
     }
 
     .text-box::-webkit-scrollbar-thumb {
-      background: rgba(0, 0, 0, 0.3);
-      border-radius: 4px;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 3px;
     }
 
     @media (max-width: 768px) {
+      .note-wrapper {
+        width: 90vw;
+      }
+
       .text-box {
-        width: 70%;
-        height: 60%;
         font-size: 12px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="background">
-    <div class="text-box">
-      <!-- Paste your lore here -->
-      Currently/1994: 38, born August 14th 1956.ˏˏ
+  <div class="container">
+    <div class="note-wrapper">
+      <div class="text-box">
+        <!-- 🎯 PASTE YOUR LORE HERE -->
+        Currently/1994: 38, born August 14th 1956.ˏˏ<br><br>
 
-      Gamemaster is the creator and the person whom has made and started the game or another name for it, Clown Therapy !!
+        Gamemaster is the creator and the person whom has made and started the game or another name for it, Clown Therapy !!<br><br>
 
-      ::
+        ::<br><br>
 
-      Gamemaster was not treated well at home, but doesn’t have many memories as he estranged and sold off to the circus at a very young age which we do not know of. He quickly found some sort of comfort in the circus although it was rather abusive in a multitude of ways. He has self educated himself in an extremely well structure, but because of his upbringing he was very mentally deranged and became egocentric in a way...
+        Gamemaster was not treated well at home, but doesn’t have many memories as he estranged and sold off to the circus at a very young age which we do not know of. He quickly found some sort of comfort in the circus although it was rather abusive in a multitude of ways. He has self educated himself in an extremely well structure, but because of his upbringing he was very mentally deranged and became egocentric in a way...
 
-      [Keep going with the rest...]
+        <!-- keep going -->
+      </div>
     </div>
   </div>
 </body>
