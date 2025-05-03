@@ -13,6 +13,15 @@
       font-family: 'Courier New', monospace;
     }
 
+    #vhs-glitch-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 9999;
+    }
 
     .vhs-overlay::before {
     content: '';
@@ -140,5 +149,6 @@ His personality is very mentally unwell and he is bipolar.. He is not okay in th
       </div>
     </div>
   </div>
+  <canvas id="vhs-glitch-canvas"></canvas>
 </body>
 </html>
