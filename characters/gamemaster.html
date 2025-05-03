@@ -150,5 +150,40 @@ His personality is very mentally unwell and he is bipolar.. He is not okay in th
     </div>
   </div>
   <canvas id="vhs-glitch-canvas"></canvas>
+  <script>
+  const canvas = document.getElementById('vhs-glitch-canvas');
+  const ctx = canvas.getContext('2d');
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  function drawGlitch() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Draw scanlines
+    ctx.fillStyle = 'rgba(255,255,255,0.02)';
+    for (let y = 0; y < canvas.height; y += 2) {
+      ctx.fillRect(0, y, canvas.width, 1);
+    }
+
+    // Draw random horizontal glitches
+    for (let i = 0; i < 5; i++) {
+      const y = Math.random() * canvas.height;
+      const height = Math.random() * 30 + 1;
+      ctx.fillStyle = `rgba(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255}, 0.1)`;
+      ctx.fillRect(0, y, canvas.width, height);
+    }
+
+    requestAnimationFrame(drawGlitch);
+  }
+
+  drawGlitch();
+</script>
+
 </body>
 </html>
