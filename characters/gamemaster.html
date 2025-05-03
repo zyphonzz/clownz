@@ -7,52 +7,57 @@
     html, body {
       margin: 0;
       padding: 0;
-      background-color: #111;
+      background-color: #000;
       height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      overflow: hidden;
       font-family: 'Courier New', monospace;
     }
 
-    .parchment {
-      width: 700px;
-      height: 520px;
+    .background {
       background-image: url('note.png');
       background-size: contain;
       background-repeat: no-repeat;
       background-position: center;
-      position: relative;
-      box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .text-scroll {
-      position: absolute;
-      top: 90px;
-      left: 60px;
-      right: 60px;
-      bottom: 40px;
+    .text-box {
+      width: 40%;
+      height: 50%;
       overflow-y: auto;
-      font-size: 13px;
-      line-height: 1.4;
       color: #000;
-      white-space: pre-wrap;
+      font-size: 14px;
+      line-height: 1.4;
+      background: rgba(255, 255, 255, 0); /* transparent */
+      padding: 10px 20px;
     }
 
-    .text-scroll::-webkit-scrollbar {
-      width: 6px;
+    .text-box::-webkit-scrollbar {
+      width: 5px;
     }
 
-    .text-scroll::-webkit-scrollbar-thumb {
+    .text-box::-webkit-scrollbar-thumb {
       background: rgba(0, 0, 0, 0.3);
       border-radius: 4px;
+    }
+
+    @media (max-width: 768px) {
+      .text-box {
+        width: 70%;
+        height: 60%;
+        font-size: 12px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="parchment">
-    <div class="text-scroll">
-      <!-- Paste your full character text here -->
+  <div class="background">
+    <div class="text-box">
+      <!-- Paste your lore here -->
       Currently/1994: 38, born August 14th 1956.ˏˏ
 
       Gamemaster is the creator and the person whom has made and started the game or another name for it, Clown Therapy !!
@@ -61,7 +66,7 @@
 
       Gamemaster was not treated well at home, but doesn’t have many memories as he estranged and sold off to the circus at a very young age which we do not know of. He quickly found some sort of comfort in the circus although it was rather abusive in a multitude of ways. He has self educated himself in an extremely well structure, but because of his upbringing he was very mentally deranged and became egocentric in a way...
 
-      [Continue the rest of your text here.]
+      [Keep going with the rest...]
     </div>
   </div>
 </body>
