@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>404? - .::FREE WILL::.</title>
+  <title>.::FREE WILL::.</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     html, body {
@@ -22,7 +22,7 @@
       width: 100vw; height: 100vh;
       background: url('https://media.giphy.com/media/oEI9uBYSzLpBK/giphy.gif') repeat;
       mix-blend-mode: screen;
-      opacity: 0.15;
+      opacity: 0.12;
       pointer-events: none;
       z-index: 1;
     }
@@ -39,17 +39,7 @@
         -2px 0 blue,
         0 2px lime,
         0 -2px magenta;
-      animation: glitch 1s infinite alternate;
       z-index: 2;
-    }
-
-    @keyframes glitch {
-      0% { transform: translate(-50%, -50%) skew(0deg); }
-      20% { transform: translate(-49%, -52%) skew(2deg); }
-      40% { transform: translate(-51%, -48%) skew(-2deg); }
-      60% { transform: translate(-50%, -50%) skew(3deg); }
-      80% { transform: translate(-50%, -51%) skew(-1deg); }
-      100% { transform: translate(-50%, -50%) skew(0deg); }
     }
 
     .vhs {
@@ -91,25 +81,28 @@
       z-index: 5;
     }
 
-    .datamosh {
+    .datamosh-links {
       position: absolute;
-      top: 40%;
-      left: 0;
-      width: 100%;
+      top: 65%;
+      left: 50%;
+      transform: translateX(-50%);
       text-align: center;
-      font-size: 1.2em;
-      color: #ff0077;
-      opacity: 0.7;
-      animation: datamosh 0.8s infinite;
-      z-index: 5;
+      z-index: 6;
     }
 
-    @keyframes datamosh {
-      0% { transform: translate(0, 0); }
-      25% { transform: translate(-3px, 1px) rotate(0.5deg); }
-      50% { transform: translate(3px, -1px) rotate(-0.5deg); }
-      75% { transform: translate(-2px, 0px) rotate(1deg); }
-      100% { transform: translate(0, 0); }
+    .datamosh-links a {
+      display: block;
+      margin: 10px 0;
+      font-size: 1.2em;
+      color: #ff0077;
+      text-decoration: none;
+      text-shadow: 1px 1px red, -1px -1px cyan;
+      transition: all 0.2s ease;
+    }
+
+    .datamosh-links a:hover {
+      color: #00ffff;
+      text-shadow: 0 0 10px #ff00ff;
     }
 
     canvas {
@@ -122,14 +115,20 @@
 </head>
 <body>
   <div class="glitch">█▓▒░ F̸R̴E̸E̵ ̸W̵I̷L̵L̶░▒▓█</div>
-  <div class="datamosh">???.datastream_corruption@<span id="weirdText"></span></div>
+  <div class="datamosh-links">
+    <a href="#">ENTRY.LOG</a>
+    <a href="#">PROJECT ██</a>
+    <a href="#">404_DIRECTORY</a>
+    <a href="#">EXIT?</a>
+  </div>
   <div class="cryptic">they see you seeing it</div>
   <div class="vhs"></div>
   <div class="scanlines"></div>
   <canvas id="bgCanvas"></canvas>
+  <canvas id="trailCanvas"></canvas>
 
   <script>
-    // Canvas static/pixel noise
+    // Static canvas
     const canvas = document.getElementById("bgCanvas");
     const ctx = canvas.getContext("2d");
     let w, h;
@@ -137,6 +136,8 @@
     function resize() {
       w = canvas.width = window.innerWidth;
       h = canvas.height = window.innerHeight;
+      trailCanvas.width = w;
+      trailCanvas.height = h;
     }
 
     window.addEventListener("resize", resize);
@@ -153,24 +154,37 @@
 
     setInterval(drawNoise, 60);
 
-    // Weird text generator
-    const chars = "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_-=+:~<>?/|";
-    function randomText(length) {
-      let result = "";
-      for (let i = 0; i < length; i++) {
-        result += chars[Math.floor(Math.random() * chars.length)];
+    // Mouse trail datamosh
+    const trailCanvas = document.getElementById("trailCanvas");
+    const tctx = trailCanvas.getContext("2d");
+    const trail = [];
+
+    window.addEventListener("mousemove", e => {
+      trail.push({
+        x: e.clientX,
+        y: e.clientY,
+        life: 1
+      });
+    });
+
+    function drawTrail() {
+      tctx.clearRect(0, 0, w, h);
+      for (let i = 0; i < trail.length; i++) {
+        const p = trail[i];
+        const alpha = p.life;
+        tctx.fillStyle = `rgba(${Math.floor(Math.random()*255)},${Math.floor(Math.random()*255)},${Math.floor(Math.random()*255)},${alpha})`;
+        tctx.beginPath();
+        tctx.arc(p.x + (Math.random()*6-3), p.y + (Math.random()*6-3), 6, 0, Math.PI * 2);
+        tctx.fill();
+        p.life -= 0.02;
       }
-      return result;
+      for (let i = trail.length - 1; i >= 0; i--) {
+        if (trail[i].life <= 0) trail.splice(i, 1);
+      }
+      requestAnimationFrame(drawTrail);
     }
 
-    setInterval(() => {
-      document.getElementById("weirdText").textContent = randomText(12);
-    }, 150);
-
-    // Random flicker effect
-    setInterval(() => {
-      document.body.style.opacity = Math.random() * 0.05 + 0.95;
-    }, 100);
+    drawTrail();
   </script>
 </body>
 </html>
