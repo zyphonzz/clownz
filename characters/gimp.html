@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Gamemaster Note</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background-color: #000;
+      height: 100vh;
+      overflow: hidden;
+      font-family: 'Courier New', monospace;
+    }
+
+    #vhs-glitch-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 9999;
+      animation: flicker 0.15s infinite; /* Apply flicker to glitch canvas */
+    }
+
+    /* VHS overlay styles */
+    .vhs-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 9998;
+      background: rgba(255, 255, 255, 0.1); /* Semi-transparent overlay */
+      backdrop-filter: blur(1px); /* Apply blur effect */
+      mix-blend-mode: overlay;
+    }
+
+    @keyframes flicker {
+      0%, 100% { opacity: 0.93; }
+      50% { opacity: 1; }
+    }
+
+    .background {
+      background-image: url('note.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #000;
+    }
+
+    .note-wrapper {
+      position: relative;
+      width: 60vw;
+      max-width: 800px;
+      aspect-ratio: 1.25;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .text-box {
+      width: 83%;
+      height: 40%;
+      overflow-y: scroll;
+      color: #000;
+      transform: translateY(15%);
+      font-size: 10px;
+      line-height: 1.4;
+      text-align: left;
+      padding: 10px;
+      background-color: rgba(255, 255, 255, 0);
+    }
+
+    .text-box::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .text-box::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 3px;
+    }
+
+    @media (max-width: 768px) {
+      .note-wrapper {
+        width: 90vw;
+      }
+
+      .text-box {
+        font-size: 64;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- VHS Overlay -->
+  <div class="vhs-overlay"></div>
+
+  <div class="background">
+    <div class="note-wrapper">
+      <div class="text-box">
+        Currently: 1994, born december 16th 1968. 
+Gimp is an assistant in the game and at time may participate, although its against his will most times and more so made to play as a punishment if he had been deemed misbehaved..
+Gimp was treated well by his original family, but was sold off a month after his 4th birthday to a circus due to his parents being poor and they needed the money… Although he doesn’t remember this due to being so young. He was rather optimistic but still extremely nervous in a way while in the circus. Even with the circus owner mistreating and abusing staff. He enjoyed the smiles on the people and children who visted him in the circus and thats what he decided to depend on to continue his journey. Although he wasnt very smart.. but is smart in his own ways? , due to the circus owners making him extremely sheltered in education and certain things everyday people would and should probably know. So he became dependent on seeing and entertaining people due to that being basically the only thing he could really do, he did enjoy it though! The effects of being so sheltered and only really being around children.. had caused some developmental difficulties and his personality was very similar to that of the children he saw. And that had caused him to be extremely vulnerable, naive, gullible.., and very easy to manipulate or fool. Causing him to be used a lot by the circus owners & becoming the main entertainment mascot at his workplace. The only reason he was extremely sheltered is because the Owners saw success in him at the circus but knew he would probably leave or escape if he was ever educated on that their behavior and actions are not the norm and are illegal. So with that in mind made him think that all their actions are normal thing that everyone has gone through. He is also very attached to anyone who is even in the slightest way nice towards him due to him having no family [estranged]. He does end up leaving the circus at 16.. in a way. 
+As told.., Gimp’s personality is very different as the average 26 year old because of his upbringing and also the development issues he has. He stays around Gamemaster due to him being the only family he has and because he believes Gamemaster is a good person even if he hurts him because he thinks that is normal. He is very reliant and dependent to Gamemaster. Although he really enjoys when Gamemaster asks him to bring players in or when Gamemaster brings them in himself. Because is the only time he gets to properly socialize in a way and keep himself ‘sane’ at times? He likes to talk to the players even though he knows their gonna have to leave in the end.. But he hopes maybe they will play again. Although he doesn’t like it when he gets locked in the room in the basement.. He believes that its for his own good.. Even though it has caused him to have mental breakdowns and anxiety to a point that he sometimes begs to be let out and scratches at the wall till his nails bleeds. He think his actions in those mental breakdowns are just him overreacting due to the way Gamemaster educated him to be useful. He knows that killing or injuring people hurts and is painful but does not know that it is bad. Which is also why he is fine with Gamemaster hitting him when mad because he believes its normal! He doesn’t like being locked in the backyard cause its scarier then being locked in the basement because he can hear the animals or the strange noises outside..!
+      </div>
+    </div>
+  </div>
+
+  <canvas id="vhs-glitch-canvas"></canvas>
+
+  <script>
+    const canvas = document.getElementById('vhs-glitch-canvas');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function drawGlitch() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Apply Gaussian blur to the entire canvas
+      ctx.filter = 'blur(0.1px)'; // Adjusted blur intensity
+
+      // Draw random horizontal glitches
+      for (let i = 0; i < 5; i++) {
+        const y = Math.random() * canvas.height;
+        const height = Math.random() * 30 + 1;
+        ctx.fillStyle = `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 0.1)`;
+        ctx.fillRect(0, y, canvas.width, height);
+      }
+
+      // Reset the blur filter after drawing
+      ctx.filter = 'none';
+
+      requestAnimationFrame(drawGlitch);
+    }
+
+    drawGlitch();
+  </script>
+</body>
+</html>
