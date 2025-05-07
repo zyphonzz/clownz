@@ -18,6 +18,18 @@ body {
     position: relative;
 }
 
+body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: url('https://c.tenor.com/3Ajc9wkF-9IAAAAd/tenor.gif') repeat;
+      mix-blend-mode: screen;
+      opacity: 0.08;
+      pointer-events: none;
+      z-index: 1;
+}
+
 /* Rainbow Bar */
 .rainbow-bar {
     width: 100%;
