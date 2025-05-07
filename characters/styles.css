@@ -1,0 +1,87 @@
+/* General Styles */
+body {
+    font-family: 'VCR OSD Mono', monospace;
+    background-color: #000;
+    color: white;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+/* Overlay with Circus Collage */
+.overlay {
+    background-image: url('circuscollage.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    position: relative;
+}
+
+/* Rainbow Bar */
+.rainbow-bar {
+    width: 100%;
+    background-color: white;
+    color: black;
+    padding: 10px;
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    font-family: 'VCR OSD Mono', monospace;
+    animation: rainbow 10s infinite linear;
+}
+
+/* Rainbow Animation */
+@keyframes rainbow {
+    0% { color: red; }
+    14% { color: orange; }
+    28% { color: yellow; }
+    42% { color: green; }
+    57% { color: blue; }
+    71% { color: indigo; }
+    85% { color: violet; }
+    100% { color: red; }
+}
+
+/* Content Section */
+.content {
+    padding: 20px;
+    text-align: center;
+    color: white;
+    z-index: 10;
+}
+
+/* Happy GIF */
+.gif-container {
+    margin-top: 20px;
+}
+
+.gif {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Description Text */
+.description {
+    font-size: 20px;
+    margin-top: 20px;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+/* Back Button */
+.back-button {
+    background-color: #fff;
+    color: #000;
+    padding: 10px 20px;
+    margin-top: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease;
+}
+
+.back-button:hover {
+    background-color: #ff69b4;
+}
