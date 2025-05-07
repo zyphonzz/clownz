@@ -65,6 +65,7 @@ body {
 .description {
     font-size: 20px;
     margin-top: 20px;
+    color: blue;
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 }
 
