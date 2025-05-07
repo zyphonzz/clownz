@@ -29,7 +29,6 @@ body {
     opacity: 0.1;
     z-index: -1;
 }
-
 body::before {
   content: "";
   position: fixed;
@@ -37,14 +36,13 @@ body::before {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: url('https://c.tenor.com/3Ajc9wkF-9IAAAAd/tenor.gif') repeat;
+  background: url('https://c.tenor.com/3Ajc9wkF-9IAAAAd/tenor.gif') no-repeat center center;
+  background-size: cover;
   mix-blend-mode: screen;
   opacity: 0.8;
   pointer-events: none;
   z-index: 1;
 }
-
-
 /* Rainbow Bar */
 .rainbow-bar {
     width: 100%;
