@@ -1,165 +1,271 @@
-<!DOCTYPE html>
+z<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Gamemaster Note</title>
+  <title>.::clownz::.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.cdnfonts.com/css/vcr-osd-mono" rel="stylesheet">
   <style>
     html, body {
       margin: 0;
       padding: 0;
-      background-color: #000;
-      height: 100vh;
       overflow: hidden;
-      font-family: 'Courier New', monospace;
+      background: black;
+      color: #00ffcc;
+      font-family: 'VCR OSD Mono', monospace;
+      user-select: none;
+      cursor: crosshair;
     }
 
-    #vhs-glitch-canvas {
+    body::before {
+      content: "";
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: url('https://media.giphy.com/media/oEI9uBYSzLpBK/giphy.gif') repeat;
+      mix-blend-mode: screen;
+      opacity: 0.08;
       pointer-events: none;
-      z-index: 9999;
-      animation: flicker 0.15s infinite; /* Apply flicker to glitch canvas */
+      z-index: 1;
     }
 
-    /* VHS overlay styles */
-    .vhs-overlay {
+    .overlay-gif {
       position: fixed;
-      top: 0;
-      left: 0;
+      top: 0; left: 0;
       width: 100vw;
       height: 100vh;
+      object-fit: cover;
+      opacity: 0.15;
+      mix-blend-mode: lighten;
+      z-index: 2;
       pointer-events: none;
-      z-index: 9998;
-      background: rgba(255, 255, 255, 0.1); /* Semi-transparent overlay */
-      backdrop-filter: blur(1px); /* Apply blur effect */
-      mix-blend-mode: overlay;
     }
 
-    @keyframes flicker {
-      0%, 100% { opacity: 0.93; }
-      50% { opacity: 1; }
-    }
-
-    .background {
-      background-image: url('note.png');
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center;
-      width: 100vw;
-      height: 100vh;
+    .main-layout {
       display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .container {
-      width: 100vw;
       height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: #000;
-    }
-
-    .note-wrapper {
+      width: 100vw;
       position: relative;
-      width: 60vw;
-      max-width: 800px;
-      aspect-ratio: 1.25;
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      z-index: 3;
     }
 
-    .text-box {
-      width: 83%;
-      height: 40%;
-      overflow-y: scroll;
-      color: #000;
-      transform: translateY(15%);
-      font-size: 10px;
-      line-height: 1.4;
-      text-align: left;
+    .sidebar {
+      width: 200px;
+      background: rgba(0, 0, 0, 0.7);
+      border-right: 2px dashed #ff00ff;
       padding: 10px;
-      background-color: rgba(255, 255, 255, 0);
+      font-size: 0.6em;
+      text-align: center;
+      z-index: 3;
     }
 
-    .text-box::-webkit-scrollbar {
-      width: 6px;
+    .sidebar a {
+      color: #00ffff;
+      text-decoration: none;
+      text-shadow: 1px 1px black;
+      display: block;
+      margin: 15px 0;
     }
 
-    .text-box::-webkit-scrollbar-thumb {
-      background: rgba(0, 0, 0, 0.4);
-      border-radius: 3px;
+    .sidebar a:hover {
+      color: #fff;
+      background: #ff00ff;
     }
 
-    @media (max-width: 768px) {
-      .note-wrapper {
-        width: 90vw;
-      }
+    .content-area {
+      flex: 1;
+      position: relative;
+    }
 
-      .text-box {
-        font-size: 64;
-      }
+    .glitch {
+      font-size: 5em;
+      position: absolute;
+      top: 15%;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #0ff;
+      text-shadow:
+        2px 0 red,
+        -2px 0 blue,
+        0 2px lime,
+        0 -2px magenta;
+      z-index: 4;
+      white-space: nowrap;
+    }
+
+    marquee {
+      position: absolute;
+      top: 0;
+      width: 100%;
+      color: #ff00ff;
+      font-size: 1.2em;
+      z-index: 5;
+      background: rgba(0, 0, 0, 0.6);
+      border-bottom: 1px dashed #ff00ff;
+    }
+
+    .cryptic {
+      position: absolute;
+      bottom: 5%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.7em;
+      color: #f0f0f0;
+      text-shadow: 0 0 3px #00ffcc;
+      z-index: 5;
+    }
+
+    .datamosh-links {
+      position: absolute;
+      top: 60%;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      z-index: 6;
+    }
+
+    .datamosh-links a {
+      display: block;
+      margin: 8px 0;
+      font-size: 2em;
+      color: #ff0077;
+      text-decoration: none;
+      text-shadow: 1px 1px red, -1px -1px cyan;
+      transition: all 0.2s ease;
+    }
+
+    .datamosh-links a:hover {
+      color: #00ffff;
+      text-shadow: 0 0 10px #ff00ff;
+    }
+
+    .vhs, .scanlines {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 4;
+    }
+
+    .vhs {
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.1),
+        rgba(0,0,0,0.1) 1px,
+        transparent 1px,
+        transparent 4px
+      );
+      opacity: 0.1;
+    }
+
+    .scanlines {
+      background: linear-gradient(to bottom, rgba(0,0,0,0.1) 50%, transparent 50%);
+      background-size: 100% 4px;
+      mix-blend-mode: overlay;
+      opacity: 0.15;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+    }
+
+    #trailCanvas {
+      z-index: 7;
+    }
+
+    #bgCanvas {
+      z-index: 0;
     }
   </style>
 </head>
 <body>
-  <!-- VHS Overlay -->
-  <div class="vhs-overlay"></div>
+  <marquee behavior="scroll" direction="left" scrollamount="6">
+    :0)
+  </marquee>
 
-  <div class="background">
-    <div class="note-wrapper">
-      <div class="text-box">
-        Currently: 1994, born december 16th 1968. 
-Gimp is an assistant in the game and at time may participate, although its against his will most times and more so made to play as a punishment if he had been deemed misbehaved..
-Gimp was treated well by his original family, but was sold off a month after his 4th birthday to a circus due to his parents being poor and they needed the money… Although he doesn’t remember this due to being so young. He was rather optimistic but still extremely nervous in a way while in the circus. Even with the circus owner mistreating and abusing staff. He enjoyed the smiles on the people and children who visted him in the circus and thats what he decided to depend on to continue his journey. Although he wasnt very smart.. but is smart in his own ways? , due to the circus owners making him extremely sheltered in education and certain things everyday people would and should probably know. So he became dependent on seeing and entertaining people due to that being basically the only thing he could really do, he did enjoy it though! The effects of being so sheltered and only really being around children.. had caused some developmental difficulties and his personality was very similar to that of the children he saw. And that had caused him to be extremely vulnerable, naive, gullible.., and very easy to manipulate or fool. Causing him to be used a lot by the circus owners & becoming the main entertainment mascot at his workplace. The only reason he was extremely sheltered is because the Owners saw success in him at the circus but knew he would probably leave or escape if he was ever educated on that their behavior and actions are not the norm and are illegal. So with that in mind made him think that all their actions are normal thing that everyone has gone through. He is also very attached to anyone who is even in the slightest way nice towards him due to him having no family [estranged]. He does end up leaving the circus at 16.. in a way. 
-As told.., Gimp’s personality is very different as the average 26 year old because of his upbringing and also the development issues he has. He stays around Gamemaster due to him being the only family he has and because he believes Gamemaster is a good person even if he hurts him because he thinks that is normal. He is very reliant and dependent to Gamemaster. Although he really enjoys when Gamemaster asks him to bring players in or when Gamemaster brings them in himself. Because is the only time he gets to properly socialize in a way and keep himself ‘sane’ at times? He likes to talk to the players even though he knows their gonna have to leave in the end.. But he hopes maybe they will play again. Although he doesn’t like it when he gets locked in the room in the basement.. He believes that its for his own good.. Even though it has caused him to have mental breakdowns and anxiety to a point that he sometimes begs to be let out and scratches at the wall till his nails bleeds. He think his actions in those mental breakdowns are just him overreacting due to the way Gamemaster educated him to be useful. He knows that killing or injuring people hurts and is painful but does not know that it is bad. Which is also why he is fine with Gamemaster hitting him when mad because he believes its normal! He doesn’t like being locked in the backyard cause its scarier then being locked in the basement because he can hear the animals or the strange noises outside..!
+  <img class="overlay-gif" src="/rainbow.gif" alt="datamosh overlay" />
+
+  <div class="main-layout">
+    <div class="sidebar">
+      <a href="#">~ HOME ~</a>
+      <a href="/characters.html">~ CHARACTERS ~</a>
+    </div>
+
+    <div class="content-area">
+      <div class="glitch">CLOWN THERAPY</div>
+      <div class="datamosh-links">
+        <a href="https://clowntherapy.vercel.app/log.txt">LOG.TXT</a>
+        <a href="https://www.roblox.com/games/98172199420305/Clown-Therapy-0">HOUSE ██</a>
+        <a href="https://clowntherapy.vercel.app/directory.txt">DIRECTORY</a>
+        <a href="https://google.com">EXIT?</a>
       </div>
+      <div class="cryptic">under development</div>
     </div>
   </div>
 
-  <canvas id="vhs-glitch-canvas"></canvas>
+  <div class="vhs"></div>
+  <div class="scanlines"></div>
+  <canvas id="bgCanvas"></canvas>
+  <canvas id="trailCanvas"></canvas>
 
   <script>
-    const canvas = document.getElementById('vhs-glitch-canvas');
-    const ctx = canvas.getContext('2d');
+    const bgCanvas = document.getElementById("bgCanvas");
+    const bgCtx = bgCanvas.getContext("2d");
 
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+    const trailCanvas = document.getElementById("trailCanvas");
+    const trailCtx = trailCanvas.getContext("2d");
+
+    let w, h;
+    function resize() {
+      w = bgCanvas.width = trailCanvas.width = window.innerWidth;
+      h = bgCanvas.height = trailCanvas.height = window.innerHeight;
     }
+    window.addEventListener("resize", resize);
+    resize();
 
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
+    function drawNoise() {
+      const imageData = bgCtx.createImageData(w, h);
+      const buffer = new Uint32Array(imageData.data.buffer);
+      for (let i = 0; i < buffer.length; i++) {
+        buffer[i] = Math.random() < 0.012 ? 0xffffffff : 0xff000000;
+      }
+      bgCtx.putImageData(imageData, 0, 0);
+    }
+    setInterval(drawNoise, 60);
 
-    function drawGlitch() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    let trail = [];
+    document.addEventListener("mousemove", (e) => {
+      trail.push({
+        x: e.clientX,
+        y: e.clientY,
+        life: 1,
+        size: Math.random() * 10 + 2,
+        color: `hsl(${Math.random()*360}, 100%, 50%)`,
+        dx: (Math.random() - 0.5) * 1.5,
+        dy: (Math.random() - 0.5) * 1.5
+      });
+    });
 
-      // Apply Gaussian blur to the entire canvas
-      ctx.filter = 'blur(0.1px)'; // Adjusted blur intensity
+    function drawTrail() {
+      trailCtx.clearRect(0, 0, w, h);
+      for (let i = 0; i < trail.length; i++) {
+        const p = trail[i];
+        p.x += p.dx;
+        p.y += p.dy;
+        p.life -= 0.015;
 
-      // Draw random horizontal glitches
-      for (let i = 0; i < 5; i++) {
-        const y = Math.random() * canvas.height;
-        const height = Math.random() * 30 + 1;
-        ctx.fillStyle = `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 0.1)`;
-        ctx.fillRect(0, y, canvas.width, height);
+        trailCtx.fillStyle = `rgba(${p.color.match(/\d+/g).join(",")},${p.life})`;
+        trailCtx.fillRect(p.x, p.y, p.size, p.size);
       }
 
-      // Reset the blur filter after drawing
-      ctx.filter = 'none';
-
-      requestAnimationFrame(drawGlitch);
+      trail = trail.filter(p => p.life > 0);
+      requestAnimationFrame(drawTrail);
     }
-
-    drawGlitch();
+    drawTrail();
   </script>
 </body>
 </html>
