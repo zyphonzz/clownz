@@ -34,10 +34,10 @@ body::before {
       content: "";
       position: fixed;
       top: 0; left: 0;
-      width: 1920vw; height: 1080vh;
+      width: 980234vw; height: 31245vh;
       background: url('https://c.tenor.com/3Ajc9wkF-9IAAAAd/tenor.gif') repeat;
       mix-blend-mode: screen;
-      opacity: 0.08;
+      opacity: 1;
       pointer-events: none;
       z-index: 1;
 }
