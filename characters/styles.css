@@ -8,6 +8,16 @@ body {
     overflow-x: hidden;
 }
 
+a {
+    color: #d1d1d1; 
+    text-decoration: none; /* Optional: removes underline */
+}
+
+a:hover {
+    color: #22ff00; /* Optional: color when hovering */
+    text-decoration: underline; /* Optional: underline on hover */
+}
+
 .overlay {
     position: relative;
     height: 100vh;
