@@ -29,14 +29,7 @@
 </head>
 <body>
   <div class="image-container">
-    <video id="myVideo" src="voidsound.mp4" loop playsinline></video>
+    <video src="voidvisual.mp4" autoplay loop muted playsinline style="width:100%; height:auto; display:block;"></video>
   </div>
-
-  <script>
-    document.body.addEventListener('click', function () {
-      const video = document.getElementById('myVideo');
-      video.play();
-    }, { once: true }); // Only trigger once
-  </script>
 </body>
 </html>
