@@ -34,7 +34,7 @@ body::before {
       content: "";
       position: fixed;
       top: 0; left: 0;
-      width: 100vw; height: 100vh;
+      width: 1920vw; height: 1080vh;
       background: url('https://c.tenor.com/3Ajc9wkF-9IAAAAd/tenor.gif') repeat;
       mix-blend-mode: screen;
       opacity: 0.08;
