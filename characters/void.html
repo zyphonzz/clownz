@@ -1,35 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>void</title>
   <style>
-    body, html {
+    body {
       margin: 0;
-      padding: 0;
-      height: 100%;
-      background-color: #000;
-      cursor: pointer;
-    }
-
-    .image-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
       height: 100vh;
+      background: black;
+      color: red;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: Arial, sans-serif;
     }
 
-    video {
-      width: 100%;
+    .textbox {
+      margin: auto;
+      text-align: center;
+      font-size: 24px;
+      padding: 20px;
+      border: 2px solid red;
+      border-radius: 10px;
+      background: black;
+      box-shadow: 0 0 10px red;
+    }
+
+    .image-grid {
+      display: grid;
+      grid-template-columns: 1fr; /* Single column */
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .image-grid img {
+      width: 200px;
       height: auto;
-      display: block;
+      border: 2px solid red;
+      border-radius: 8px;
+      background: black;
+      box-shadow: 0 0 10px red;
     }
   </style>
 </head>
 <body>
-  <div class="image-container">
-    <video src="voidvisual.mp4" autoplay loop muted playsinline style="width:100%; height:auto; display:block;"></video>
+
+  <div class="textbox">
+    Centered Text Here
   </div>
+
+  <div class="image-grid">
+    <img src="your-image1.jpg" alt="Image 1">
+    <img src="your-image2.jpg" alt="Image 2">
+    <img src="your-image3.jpg" alt="Image 3">
+  </div>
+
 </body>
 </html>
