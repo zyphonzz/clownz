@@ -8,50 +8,61 @@
       background: black;
       color: red;
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
-      font-family: Arial, sans-serif;
+      font-family: monospace;
     }
 
-    .textbox {
-      margin: auto;
-      text-align: center;
-      font-size: 24px;
-      padding: 20px;
-      border: 2px solid red;
-      border-radius: 10px;
-      background: black;
-      box-shadow: 0 0 10px red;
+    .container {
+      display: flex;
+      justify-content: space-between;
+      width: 80%;
+      max-width: 1200px;
     }
 
-    .image-grid {
+    .grid {
       display: grid;
-      grid-template-columns: 1fr; /* Single column */
+      grid-template-rows: repeat(6, 1fr); /* 6 squares stacked */
       gap: 20px;
-      padding: 20px;
     }
 
-    .image-grid img {
-      width: 200px;
-      height: auto;
+    .square {
+      width: 80px;
+      height: 80px;
       border: 2px solid red;
-      border-radius: 8px;
+      box-sizing: border-box;
+    }
+
+    .center {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .center input {
       background: black;
-      box-shadow: 0 0 10px red;
+      border: 2px solid red;
+      color: red;
+      padding: 10px;
+      font-size: 16px;
+      font-family: monospace;
+      outline: none;
+      margin-top: 20px;
     }
   </style>
 </head>
 <body>
 
-  <div class="textbox">
-    Centered Text Here
-  </div>
+  <div class="container">
+    <!-- Left grid -->
+    <div class="grid">
+      <div class="square"></div>
+      <div class="square"></div>
+      <div class="square"></div>
+      <div class="square"></div>
+      <div class="square"></div>
+      <div class="square"></div>
+    </div>
 
-  <div class="image-grid">
-    <img src="your-image1.jpg" alt="Image 1">
-    <img src="your-image2.jpg" alt="Image 2">
-    <img src="your-image3.jpg" alt="Image 3">
-  </div>
-
-</body>
-</html>
+    <!--
