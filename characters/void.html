@@ -69,12 +69,12 @@
       width: 2px;
       height: 16px;
       background: red;
-      transition: left 0.2s ease; /* smooth movement */
+      animation: blink 1s step-start infinite;
     }
 
     @keyframes blink {
       0% { opacity: 1; }
-      50% { opacity: 1; }
+      50% { opacity: 0; }
       100% { opacity: 1; }
     }
   </style>
@@ -95,7 +95,9 @@
     <!-- Center -->
     <div class="center">
       <div class="input-container" onclick="focusInput()">
-        <input class="fake-input" id="input" oninput="updateCaret()" onkeydown="setTimeout(updateCaret, 0)">
+        <input class="fake-input" id="input"
+          oninput="handleInput(event)"
+          onkeydown="handleKeyDown(event)">
         <div class="caret" id="caret"></div>
       </div>
     </div>
@@ -135,37 +137,39 @@
       document.body.removeChild(span);
 
       caret.style.left = (10 + width) + 'px';
-      }
+    }
 
     function handleInput(event) {
       const input = event.target;
       const value = input.value;
 
-    // Update the actual password and mask the input
-      actualPassword += value.slice(actualPassword.length); // Add new characters
-      input.value = "*".repeat(actualPassword.length); // Mask with asterisks
+      // Get newly typed character(s)
+      if (value.length > actualPassword.length) {
+        actualPassword += value.slice(actualPassword.length);
+      } else {
+        actualPassword = actualPassword.slice(0, value.length);
+      }
 
+      input.value = "*".repeat(actualPassword.length);
       updateCaret();
     }
-    
-      function handleKeyDown(event) {
-        if (event.key === "Enter") {
-          // Check if the password is correct
-          if (actualPassword === correctPassword) {
-            alert("Password is correct!");
-          } else {
-            alert("Incorrect password!");
-          }
-          actualPassword = ""; // Reset the password
-          event.target.value = ""; // Clear the input
+
+    function handleKeyDown(event) {
+      if (event.key === "Enter") {
+        if (actualPassword === correctPassword) {
+          alert("Password is correct!");
+        } else {
+          alert("Incorrect password!");
+        }
+        actualPassword = "";
+        event.target.value = "";
         updateCaret();
       }
     }
 
-      // Initialize caret position
+    // Initialize caret position
     updateCaret();
   </script>
-  
 
 </body>
 </html>
