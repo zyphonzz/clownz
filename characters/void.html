@@ -112,31 +112,61 @@
   </div>
 
   <script>
-    function focusInput() {
-      document.getElementById('input').focus();
-    }
+    
+  let actualPassword = ""; // Store the real password
+  const correctPassword = "imsorry"; // Replace with your desired password
 
-    function updateCaret() {
-      const input = document.getElementById('input');
-      const caret = document.getElementById('caret');
-      const text = input.value;
-      
-      // Create a temp span to measure text width
-      const span = document.createElement('span');
-      span.style.visibility = 'hidden';
-      span.style.position = 'absolute';
-      span.style.font = '16px monospace';
-      span.textContent = text;
-      document.body.appendChild(span);
-      const width = span.offsetWidth;
-      document.body.removeChild(span);
-      
-      caret.style.left = (10 + width) + 'px';
-    }
+  function focusInput() {
+    document.getElementById('input').focus();
+  }
 
-    // Initialize caret position
+  function updateCaret() {
+    const input = document.getElementById('input');
+    const caret = document.getElementById('caret');
+    const text = input.value;
+
+    // Create a temp span to measure text width
+    const span = document.createElement('span');
+    span.style.visibility = 'hidden';
+    span.style.position = 'absolute';
+    span.style.font = '16px monospace';
+    span.textContent = text;
+    document.body.appendChild(span);
+    const width = span.offsetWidth;
+    document.body.removeChild(span);
+
+    caret.style.left = (10 + width) + 'px';
+  }
+
+  function handleInput(event) {
+    const input = event.target;
+    const value = input.value;
+
+    // Update the actual password and mask the input
+    actualPassword += value.slice(actualPassword.length); // Add new characters
+    input.value = "*".repeat(actualPassword.length); // Mask with asterisks
+
     updateCaret();
+  }
+
+  function handleKeyDown(event) {
+    if (event.key === "Enter") {
+      // Check if the password is correct
+      if (actualPassword === correctPassword) {
+        alert("Password is correct!");
+      } else {
+        alert("Incorrect password!");
+      }
+      actualPassword = ""; // Reset the password
+      event.target.value = ""; // Clear the input
+      updateCaret();
+    }
+  }
+
+  // Initialize caret position
+  updateCaret();
   </script>
+  
 
 </body>
 </html>
