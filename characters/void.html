@@ -1,186 +1,101 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <title>VOID</title>
   <style>
-
-    .dshadow {
-      filter: drop-shadow(0px 0px 10px red); /* Corrected semicolon */
-    }
-    body {
+    html, body {
       margin: 0;
-      height: 100vh;
-      background: black;
-      color: red;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: monospace;
-    }
-    body::before {
-      background: url('wall.jpg');
-    }
-    
-    .container {
-      display: flex;
-      justify-content: space-between;
-      width: 80%;
-      max-width: 1200px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-rows: repeat(6, 1fr);
-      gap: 20px;
-    }
-
-    .square {
-      width: 200px;
-      height: 200px;
-      border: 2px solid red;
-      box-sizing: border-box;
-    }
-
-    .center {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .input-container {
-      position: relative;
-      border: 2px solid red;
-      padding: 10px;
-      font-size: 16px;
-      font-family: monospace;
-      color: red;
-      background: black;
-      min-width: 200px;
-      cursor: text;
-    }
-
-    .fake-input {
-      outline: none;
-      border: none;
-      background: none;
-      color: red;
-      font-family: monospace;
-      font-size: 16px;
+      padding: 0;
+      overflow: hidden;
+      height: 100%;
       width: 100%;
-      caret-color: transparent; /* hide real caret */
     }
-
-    .caret {
+    canvas {
       position: absolute;
-      top: 10px;
-      width: 2px;
-      height: 16px;
-      background: red;
-      animation: blink 1s step-start infinite;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
     }
-
-    @keyframes blink {
-      0% { opacity: 1; }
-      50% { opacity: 0; }
-      100% { opacity: 1; }
+    #passwordInput {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      left: calc((635 + 115) / 1708 * 100vw);
+      top: calc((530 + 115) / 1472 * 100vh);
+      width: calc(230 / 1708 * 100vw);
+      height: calc(50 / 1472 * 100vh);
+      font-size: calc(20 / 1708 * 100vw);
+      background: transparent;
+      color: red;
+      border: none;
+      outline: none;
+      text-align: center;
     }
   </style>
 </head>
 <body>
-
-  <div class="container">
-    <!-- Left grid -->
-    <div class="grid">
-      <div class="square dshadow"></div>
-      <div class="square dshadow"></div>
-      <div class="square dshadow"></div>
-      <div class="square dshadow"></div>
-      <div class="square dshadow"></div>
-      <div class="square dshadow"></div>
-    </div>
-
-    <!-- Center -->
-    <div class="center">
-      <div class="input-container" onclick="focusInput()">
-        <input class="fake-input" id="input"
-          oninput="handleInput(event)"
-          onkeydown="handleKeyDown(event)">
-        <div class="caret" id="caret"></div>
-      </div>
-    </div>
-
-    <!-- Right grid -->
-    <div class="grid">
-      <img src="pedo.png" class="square dshadow">
-      <img src="a1.png" class="square dshadow">
-      <img src="a2.png" class="square dshadow">
-      <img src="a3.png" class="square dshadow">
-      <img src="a4.png" class="square dshadow">
-      <img src="a5.png" class="square dshadow">
-    </div>
-  </div>
+  <canvas id="canvas"></canvas>
+  <input type="text" id="passwordInput" maxlength="20" placeholder="Enter Password" />
 
   <script>
-    let actualPassword = ""; // Store the real password
-    const correctPassword = "imsorry"; // Replace with your desired password
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const img = new Image();
+    img.src = 'https://cdn.discordapp.com/attachments/1372187342449938465/1403323488411975832/image.png?ex=68972258&is=6895d0d8&hm=b0677acf2f98c1ac6fe82b78cefe6b518d386a3d1a3fcba5a689a9c4736b205b&';
 
-    function focusInput() {
-      document.getElementById('input').focus();
+    const buttons = [
+      { x: 100, y: 150, w: 230, h: 230, name: "topLeft" },
+      { x: 100, y: 510, w: 230, h: 230, name: "midLeft" },
+      { x: 100, y: 870, w: 230, h: 230, name: "botLeft" },
+      { x: 1190, y: 150, w: 230, h: 230, name: "topRight" },
+      { x: 1190, y: 510, w: 230, h: 230, name: "midRight" },
+      { x: 1190, y: 870, w: 230, h: 230, name: "botRight" },
+    ];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      drawImageScaled();
     }
 
-    function updateCaret() {
-      const input = document.getElementById('input');
-      const caret = document.getElementById('caret');
-      const text = input.value;
-
-      // Create a temp span to measure text width
-      const span = document.createElement('span');
-      span.style.visibility = 'hidden';
-      span.style.position = 'absolute';
-      span.style.font = '16px monospace';
-      span.textContent = text;
-      document.body.appendChild(span);
-      const width = span.offsetWidth;
-      document.body.removeChild(span);
-
-      caret.style.left = (10 + width) + 'px';
+    function drawImageScaled() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
     }
 
-    function handleInput(event) {
-      const input = event.target;
-      const value = input.value;
+    img.onload = drawImageScaled;
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
 
-      // Get newly typed character(s)
-      if (value.length > actualPassword.length) {
-        actualPassword += value.slice(actualPassword.length);
-      } else {
-        actualPassword = actualPassword.slice(0, value.length);
-      }
+    canvas.addEventListener('click', (e) => {
+      const scaleX = canvas.width / 1708;
+      const scaleY = canvas.height / 1472;
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
 
-      input.value = "*".repeat(actualPassword.length);
-      updateCaret();
-    }
+      for (const btn of buttons) {
+        const scaledX = btn.x * scaleX;
+        const scaledY = btn.y * scaleY;
+        const scaledW = btn.w * scaleX;
+        const scaledH = btn.h * scaleY;
 
-    function handleKeyDown(event) {
-      if (event.key === "Enter") {
-        if (actualPassword === correctPassword) {
-          alert("dr pepper");
-        } else {
-          alert("nil");
+        if (x >= scaledX && x <= scaledX + scaledW && y >= scaledY && y <= scaledY + scaledH) {
+          alert(`Clicked: ${btn.name}`);
+          return;
         }
-        actualPassword = "";
-        event.target.value = "";
-        updateCaret();
       }
-    }
+    });
 
-    // Initialize caret position
-    updateCaret();
+    document.getElementById('passwordInput').addEventListener('change', (e) => {
+      if (e.target.value === 'imsorry') {
+        alert('Correct password!');
+      } else {
+        alert('Wrong password.');
+      }
+    });
   </script>
-
 </body>
 </html>
