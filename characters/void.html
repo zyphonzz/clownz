@@ -45,12 +45,12 @@
     img.src = 'voidweb.png';
 
     const buttons = [
-      { x: 100, y: 150, w: 230, h: 230, name: "topLeft" },
-      { x: 100, y: 510, w: 230, h: 230, name: "midLeft" },
-      { x: 100, y: 870, w: 230, h: 230, name: "botLeft" },
-      { x: 1190, y: 150, w: 230, h: 230, name: "topRight" },
-      { x: 1190, y: 510, w: 230, h: 230, name: "midRight" },
-      { x: 1190, y: 870, w: 230, h: 230, name: "botRight" },
+      { x: 100, y: 150, w: 230, h: 230, name: "gamemaster" },
+      { x: 100, y: 510, w: 230, h: 230, name: "pest" },
+      { x: 100, y: 870, w: 230, h: 230, name: "pest" },
+      { x: 1190, y: 150, w: 230, h: 230, name: "gimp" },
+      { x: 1190, y: 510, w: 230, h: 230, name: "pest" },
+      { x: 1190, y: 870, w: 230, h: 230, name: "boxy" },
     ];
 
     let drawOffsetX = 0;
@@ -98,7 +98,7 @@
         const scaledH = btn.h * drawScale;
 
         if (x >= scaledX && x <= scaledX + scaledW && y >= scaledY && y <= scaledY + scaledH) {
-          alert(`{btn.name}`);
+          alert(btn.name);
           return;
         }
       }
