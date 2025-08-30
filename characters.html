@@ -1,270 +1,149 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
+  <title>clownz</title>
   <meta charset="UTF-8">
-  <title>.::clownz::.</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.cdnfonts.com/css/vcr-osd-mono" rel="stylesheet">
   <style>
-    html, body {
+    body {
+      background-color: black;
+      color: white;
+      font-family: monospace;
       margin: 0;
       padding: 0;
       overflow: hidden;
-      background: black;
-      color: #00ffcc;
-      font-family: 'VCR OSD Mono', monospace;
-      user-select: none;
-      cursor: crosshair;
     }
 
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background: url('https://media.giphy.com/media/oEI9uBYSzLpBK/giphy.gif') repeat;
-      mix-blend-mode: screen;
-      opacity: 0.08;
-      pointer-events: none;
-      z-index: 1;
+    /* Disturbing background */
+    body {
+      background: url('7e92a2cc-eb06-4050-aa82-7b7401b2b88e.png') repeat;
+      background-size: cover;
     }
 
-    .overlay-gif {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
-      object-fit: cover;
-      opacity: 0.15;
-      mix-blend-mode: lighten;
-      z-index: 2;
-      pointer-events: none;
+    /* Blinking creepy text */
+    .blink {
+      animation: blink 1s steps(1, start) infinite;
+    }
+    @keyframes blink {
+      50% { visibility: hidden; }
     }
 
-    .main-layout {
-      display: flex;
-      height: 100vh;
-      width: 100vw;
-      position: relative;
-      z-index: 3;
-    }
-
-    .sidebar {
-      width: 200px;
-      background: rgba(0, 0, 0, 0.7);
-      border-right: 2px dashed #ff00ff;
-      padding: 10px;
-      font-size: 0.6em;
-      text-align: center;
-      z-index: 3;
-    }
-
-    .sidebar a {
-      color: #00ffff;
-      text-decoration: none;
-      text-shadow: 1px 1px black;
-      display: block;
-      margin: 15px 0;
-    }
-
-    .sidebar a:hover {
-      color: #fff;
-      background: #ff00ff;
-    }
-
-    .content-area {
-      flex: 1;
-      position: relative;
-    }
-
+    /* Floating glitch text */
     .glitch {
-      font-size: 5em;
+      font-size: 40px;
+      color: white;
       position: absolute;
-      top: 15%;
+      top: 20%;
       left: 50%;
       transform: translateX(-50%);
-      color: #0ff;
       text-shadow:
         2px 0 red,
-        -2px 0 blue,
+        -2px 0 cyan,
         0 2px lime,
         0 -2px magenta;
-      z-index: 4;
-      white-space: nowrap;
     }
 
+    /* Creepy sidebar */
+    .sidebar {
+      width: 180px;
+      float: left;
+      padding: 10px;
+      border-right: 2px dashed white;
+      background-color: rgba(0,0,0,0.8);
+    }
+    .sidebar a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      margin: 10px 0;
+    }
+    .sidebar a:hover {
+      color: black;
+      background-color: white;
+    }
+
+    /* Content area */
+    .content {
+      margin-left: 190px;
+      padding: 20px;
+    }
+
+    /* Scrolling warnings */
     marquee {
-      position: absolute;
-      top: 0;
-      width: 100%;
-      color: #ff00ff;
-      font-size: 0.8em;
-      z-index: 5;
-      background: rgba(0, 0, 0, 0.6);
-      border-bottom: 1px dashed #ff00ff;
+      color: red;
+      font-weight: bold;
+      font-size: 16px;
+      background: black;
+      border-bottom: 1px dashed white;
     }
 
+    /* Glitch cursor trail */
+    .trail {
+      position: fixed;
+      width: 5px;
+      height: 5px;
+      background: white;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* Cryptic bottom text */
     .cryptic {
       position: absolute;
       bottom: 5%;
       left: 50%;
       transform: translateX(-50%);
-      font-size: 0.7em;
-      color: #f0f0f0;
-      text-shadow: 0 0 3px #00ffcc;
-      z-index: 5;
-    }
-
-    .datamosh-links {
-      position: absolute;
-      top: 70%;
-      left: 50%;
-      transform: translateX(-50%);
+      color: white;
+      font-size: 10px;
       text-align: center;
-      z-index: 6;
-    }
-
-    .datamosh-links a {
-      display: block;
-      margin: 8px 0;
-      font-size: 2em;
-      color: #ff0077;
-      text-decoration: none;
-      text-shadow: 1px 1px red, -1px -1px cyan;
-      transition: all 0.2s ease;
-    }
-
-    .datamosh-links a:hover {
-      color: #00ffff;
-      text-shadow: 0 0 10px #ff00ff;
-    }
-
-    .vhs, .scanlines {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 4;
-    }
-
-    .vhs {
-      background: repeating-linear-gradient(
-        to bottom,
-        rgba(0,0,0,0.1),
-        rgba(0,0,0,0.1) 1px,
-        transparent 1px,
-        transparent 4px
-      );
-      opacity: 0.1;
-    }
-
-    .scanlines {
-      background: linear-gradient(to bottom, rgba(0,0,0,0.1) 50%, transparent 50%);
-      background-size: 100% 4px;
-      mix-blend-mode: overlay;
-      opacity: 0.15;
-    }
-
-    canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      pointer-events: none;
-    }
-
-    #trailCanvas {
-      z-index: 7;
-    }
-
-    #bgCanvas {
-      z-index: 0;
     }
   </style>
 </head>
 <body>
-  <marquee behavior="scroll" direction="left" scrollamount="6">
-    :0)
-  </marquee>
 
-  <img class="overlay-gif" src="https://c.tenor.com/l1n7Y5H94KMAAAAd/tenor.gif" alt="datamosh overlay" />
+<marquee behavior="scroll" direction="left">clown therapy</marquee>
+<marquee behavior="scroll" direction="right">home</marquee>
 
-  <div class="main-layout">
-    <div class="sidebar">
-      <a href="https://clowntherapy.vercel.app">~ HOME ~</a>
-      <a href="https://clowntherapy.vercel.app/characters.html">~ CHARACTERS ~</a>
-    </div>
+<div class="sidebar">
+  <a href="#">home</a>
+  <a href="https://clowntherapy.vercel.app/characters/gamemaster.html">gamemaster</a>
+  <a href="https://clowntherapy.vercel.app/characters/gamemaster.html">gimp</a>
+</div>
 
-    <div class="content-area">
-      <div class="glitch">CHARACTERS</div>
-      <div class="datamosh-links">
-        <a href="https://clowntherapy.vercel.app/characters/gamemaster.html">GAMEMASTER</a>
-        <a href="https://clowntherapy.vercel.app/characters/gimp.html">GIMP</a>
-        <a href="https://clowntherapy.vercel.app">GO BACK?</a>
-      </div>
-      <div class="cryptic">under development</div>
-    </div>
+<div class="content">
+  <div class="cryptic">
+    under construction<br>
   </div>
+</div>
 
-  <div class="vhs"></div>
-  <div class="scanlines"></div>
-  <canvas id="bgCanvas"></canvas>
-  <canvas id="trailCanvas"></canvas>
+<script>
+  // Creepy cursor trail
+  const trailCount = 50;
+  const trails = [];
 
-  <script>
-    const bgCanvas = document.getElementById("bgCanvas");
-    const bgCtx = bgCanvas.getContext("2d");
+  for(let i=0;i<trailCount;i++){
+    const t = document.createElement('div');
+    t.className = 'trail';
+    document.body.appendChild(t);
+    trails.push({el: t, x:0, y:0});
+  }
 
-    const trailCanvas = document.getElementById("trailCanvas");
-    const trailCtx = trailCanvas.getContext("2d");
-
-    let w, h;
-    function resize() {
-      w = bgCanvas.width = trailCanvas.width = window.innerWidth;
-      h = bgCanvas.height = trailCanvas.height = window.innerHeight;
-    }
-    window.addEventListener("resize", resize);
-    resize();
-
-    function drawNoise() {
-      const imageData = bgCtx.createImageData(w, h);
-      const buffer = new Uint32Array(imageData.data.buffer);
-      for (let i = 0; i < buffer.length; i++) {
-        buffer[i] = Math.random() < 0.012 ? 0xffffffff : 0xff000000;
-      }
-      bgCtx.putImageData(imageData, 0, 0);
-    }
-    setInterval(drawNoise, 60);
-
-    let trail = [];
-    document.addEventListener("mousemove", (e) => {
-      trail.push({
-        x: e.clientX,
-        y: e.clientY,
-        life: 1,
-        size: Math.random() * 10 + 2,
-        color: `hsl(${Math.random()*360}, 100%, 50%)`,
-        dx: (Math.random() - 0.5) * 1.5,
-        dy: (Math.random() - 0.5) * 1.5
-      });
+  document.addEventListener('mousemove', e=>{
+    trails.forEach((t, i)=>{
+      setTimeout(()=>{t.el.style.left = e.clientX + (Math.random()*20-10) + 'px';
+                       t.el.style.top = e.clientY + (Math.random()*20-10) + 'px';}, i*10);
     });
+  });
 
-    function drawTrail() {
-      trailCtx.clearRect(0, 0, w, h);
-      for (let i = 0; i < trail.length; i++) {
-        const p = trail[i];
-        p.x += p.dx;
-        p.y += p.dy;
-        p.life -= 0.015;
+  // Random text glitches
+  const glitchTexts = document.querySelectorAll('.glitch');
+  setInterval(()=>{
+    glitchTexts.forEach(el=>{
+      el.style.left = 50 + Math.random()*10 -5 + '%';
+      el.style.top = 20 + Math.random()*10 -5 + '%';
+    });
+  }, 200);
 
-        trailCtx.fillStyle = `rgba(${p.color.match(/\d+/g).join(",")},${p.life})`;
-        trailCtx.fillRect(p.x, p.y, p.size, p.size);
-      }
+</script>
 
-      trail = trail.filter(p => p.life > 0);
-      requestAnimationFrame(drawTrail);
-    }
-    drawTrail();
-  </script>
 </body>
 </html>
