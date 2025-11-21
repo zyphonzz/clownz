@@ -1,139 +1,108 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>clownz</title>
+  <title>clowntherapy - characters</title>
   <meta charset="UTF-8">
+
   <style>
     body {
-      background-color: black;
-      color: white;
+      background-color: #E0E0E0;
+      color: black;
       margin: 0;
       padding: 0;
-      overflow: hidden;
-    }
-    /* Blinking creepy text */
-    .blink {
-      animation: blink 1s steps(1, start) infinite;
-    }
-    @keyframes blink {
-      50% { visibility: hidden; }
+      font-family: Arial, Helvetica, sans-serif;
     }
 
-    /* Floating glitch text */
-    .glitch {
-      font-size: 40px;
-      color: white;
-      position: absolute;
-      top: 20%;
-      left: 50%;
-      transform: translateX(-50%);
-      text-shadow:
-        2px 0 red,
-        -2px 0 cyan,
-        0 2px lime,
-        0 -2px magenta;
+    /* Top header bar */
+    .header {
+      background-color: #FFFFFF;
+      border-bottom: 2px solid #0033CC;
+      padding: 10px;
+      display: flex;
+      align-items: center;
     }
 
-    /* Creepy sidebar */
+    .header img {
+      height: 55px;
+      margin-right: 15px;
+    }
+
+    .header-title {
+      font-size: 28px;
+      font-weight: bold;
+      color: #0033CC;
+      text-shadow: 1px 1px #AAAAAA;
+    }
+
+    /* Sidebar like old Ebay */
     .sidebar {
       width: 180px;
-      float: left;
+      background-color: #FFFFFF;
+      border-right: 2px solid #0033CC;
       padding: 10px;
-      background-color: rgba(0,0,0,0.8);
-    }
-    .sidebar a {
-      display: block;
-      color: white;
-      text-decoration: none;
-      margin: 10px 0;
-    }
-    .sidebar a:hover {
-      color: black;
-      background-color: white;
+      float: left;
+      height: calc(100vh - 100px);
     }
 
-    /* Content area */
+    .sidebar a {
+      display: block;
+      padding: 6px;
+      background-color: #F5F5F5;
+      color: #0033CC;
+      text-decoration: none;
+      margin-bottom: 6px;
+      border: 1px solid #CCCCCC;
+      font-size: 14px;
+    }
+
+    .sidebar a:hover {
+      background-color: #DDE7FF;
+    }
+
     .content {
-      margin-left: 190px;
+      margin-left: 200px;
       padding: 20px;
     }
 
-    /* Scrolling warnings */
     marquee {
-      color: red;
-      font-weight: bold;
-      font-size: 16px;
-      background: black;
-    }
-
-    /* Glitch cursor trail */
-    .trail {
-      position: fixed;
-      width: 5px;
-      height: 5px;
-      background: white;
-      pointer-events: none;
-      z-index: 9999;
-    }
-
-    /* Cryptic bottom text */
-    .cryptic {
-      position: absolute;
-      bottom: 5%;
-      left: 50%;
-      transform: translateX(-50%);
+      background: #0033CC;
       color: white;
-      font-size: 10px;
-      text-align: center;
+      font-weight: bold;
+      padding: 5px;
+      font-size: 14px;
+    }
+
+    .notice-box {
+      background: white;
+      padding: 15px;
+      border: 2px solid #0033CC;
+      max-width: 600px;
+      font-size: 14px;
     }
   </style>
 </head>
+
 <body>
 
-<marquee behavior="scroll" direction="left">clown therapy</marquee>
-<marquee behavior="scroll" direction="right">characters</marquee>
+<div class="header">
+  <img src="clowntherapy.png" alt="clowntherapy logo">
+  <div class="header-title">ClownTherapy™ Characters</div>
+</div>
+
+<marquee behavior="scroll" direction="right">Meet the ClownTherapy™ cast — browse character files</marquee>
 
 <div class="sidebar">
-  <a href="https://clowntherapy.vercel.app">home</a>
-  <a href="https://clowntherapy.vercel.app/characters/gamemaster.html">gamemaster</a>
-  <a href="https://clowntherapy.vercel.app/characters/gimp.html">gimp</a>
+  <a href="https://clowntherapy.vercel.app">Home</a>
+  <a href="https://clowntherapy.vercel.app/characters/gamemaster.html">Gamemaster</a>
+  <a href="https://clowntherapy.vercel.app/characters/gimp.html">Gimp</a>
 </div>
 
 <div class="content">
-  <div class="cryptic">
-    under construction<br>
+  <div class="notice-box">
+    <h2>Characters Page</h2>
+    <p>This area is still under construction — profiles will be added soon.</p>
   </div>
 </div>
-
-<script>
-  // Creepy cursor trail
-  const trailCount = 50;
-  const trails = [];
-
-  for(let i=0;i<trailCount;i++){
-    const t = document.createElement('div');
-    t.className = 'trail';
-    document.body.appendChild(t);
-    trails.push({el: t, x:0, y:0});
-  }
-
-  document.addEventListener('mousemove', e=>{
-    trails.forEach((t, i)=>{
-      setTimeout(()=>{t.el.style.left = e.clientX + (Math.random()*20-10) + 'px';
-                       t.el.style.top = e.clientY + (Math.random()*20-10) + 'px';}, i*10);
-    });
-  });
-
-  // Random text glitches
-  const glitchTexts = document.querySelectorAll('.glitch');
-  setInterval(()=>{
-    glitchTexts.forEach(el=>{
-      el.style.left = 50 + Math.random()*10 -5 + '%';
-      el.style.top = 20 + Math.random()*10 -5 + '%';
-    });
-  }, 200);
-
-</script>
 
 </body>
 </html>
