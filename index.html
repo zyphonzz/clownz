@@ -1,141 +1,76 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <title>clownz</title>
-  <meta charset="UTF-8">
-  <style>
-    body {
-      background-color: black;
-      color: white;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-    }
-
-    /* Blinking creepy text */
-    .blink {
-      animation: blink 1s steps(1, start) infinite;
-    }
-    @keyframes blink {
-      50% { visibility: hidden; }
-    }
-
-    /* Floating glitch text */
-    .glitch {
-      font-size: 40px;
-      color: white;
-      position: absolute;
-      top: 20%;
-      left: 50%;
-      transform: translateX(-50%);
-      text-shadow:
-        2px 0 red,
-        -2px 0 cyan,
-        0 2px lime,
-        0 -2px magenta;
-    }
-
-    /* Creepy sidebar */
-    .sidebar {
-      width: 180px;
-      float: left;
-      padding: 10px;f
-      background-color: rgba(0,0,0,0.8);
-    }
-    .sidebar a {
-      display: block;
-      color: white;
-      text-decoration: none;
-      margin: 10px 0;
-    }
-    .sidebar a:hover {
-      color: black;
-      background-color: white;
-    }
-
-    /* Content area */
-    .content {
-      margin-left: 190px;
-      padding: 20px;
-    }
-
-    /* Scrolling warnings */
-    marquee {
-      color: red;
-      font-weight: bold;
-      font-size: 16px;
-      background: black;
-    }
-
-    /* Glitch cursor trail */
-    .trail {
-      position: fixed;
-      width: 5px;
-      height: 5px;
-      background: white;
-      pointer-events: none;
-      z-index: 9999;
-    }
-
-    /* Cryptic bottom text */
-    .cryptic {
-      position: absolute;
-      bottom: 5%;
-      left: 50%;
-      transform: translateX(-50%);
-      color: white;
-      font-size: 10px;
-      text-align: center;
-    }
-  </style>
+<title>clowntherapy - characters</title>
+<meta charset="UTF-8">
+<font face="Georgia, serif">
 </head>
-<body>
 
-<marquee behavior="scroll" direction="left">clown therapy</marquee>
-<marquee behavior="scroll" direction="right">home</marquee>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000CC" vlink="#660099" alink="#FF0000">
 
-<div class="sidebar">
-  <a href="#">home</a>
-  <a href="characters.html">characters</a>
-  <a href="updates.html">updates</a>
-</div>
+<!-- HEADER -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5">
+  <tr>
+    <td width="1%">
+      <img src="clowntherapy.png" alt="logo" height="80">
+    </td>
+    <td>
+      <font size="6"><b>ClownTherapy Characters</b></font><br>
+      <font size="2">Meet the stars of our questionable circus</font>
+    </td>
+  </tr>
+</table>
 
-<div class="content"
+<!-- NAV -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#EEEEEE">
+  <tr>
+    <td>
+      <a href="index.html">Home</a> |
+      <a href="characters.html">Characters</a> |
+      <a href="updates.html">Updates</a>
+    </td>
+  </tr>
+</table>
 
-  <div class="cryptic">
-    under construction<br>
-  </div>
-</div>
+<br>
 
-<script>
-  // Creepy cursor trail
-  const trailCount = 50;
-  const trails = [];
+<!-- LAYOUT -->
+<table width="100%" border="0" cellspacing="10" cellpadding="0">
+  <tr>
 
-  for(let i=0;i<trailCount;i++){
-    const t = document.createElement('div');
-    t.className = 'trail';
-    document.body.appendChild(t);
-    trails.push({el: t, x:0, y:0});
-  }
+    <!-- LEFT SIDEBAR -->
+    <td width="160" valign="top">
+      <table width="100%" border="1" cellspacing="0" cellpadding="5">
+        <tr><td bgcolor="#EEEEEE"><b>Character Files</b></td></tr>
+        <tr><td><a href="characters/gamemaster.html">Gamemaster</a></td></tr>
+        <tr><td><a href="characters/gimp.html">Gimp</a></td></tr>
+        <tr><td><a href="#">Mime.pdf (coming soon)</a></td></tr>
+        <tr><td><a href="#">Jester Bio</a></td></tr>
+      </table>
+    </td>
 
-  document.addEventListener('mousemove', e=>{
-    trails.forEach((t, i)=>{
-      setTimeout(()=>{t.el.style.left = e.clientX + (Math.random()*20-10) + 'px';
-                       t.el.style.top = e.clientY + (Math.random()*20-10) + 'px';}, i*10);
-    });
-  });
+    <!-- MAIN CONTENT -->
+    <td valign="top">
+      <table border="1" width="100%" cellspacing="0" cellpadding="10" bordercolor="#0033CC">
+        <tr><td bgcolor="#F5F5FF">
+          <font size="5"><b>Characters Overview</b></font><br><br>
+          This page is under construction. Character profiles will be added soon.<br><br>
+          <hr>
+          <font size="4"><b>Available Character Pages</b></font><br>
+          • <a href="characters/gamemaster.html">Gamemaster</a><br>
+          • <a href="characters/gimp.html">Gimp</a><br>
+          • More coming soon!<br>
+        </td></tr>
+      </table>
+    </td>
 
-  // Random text glitches
-  const glitchTexts = document.querySelectorAll('.glitch');
-  setInterval(()=>{
-    glitchTexts.forEach(el=>{
-      el.style.left = 50 + Math.random()*10 -5 + '%';
-      el.style.top = 20 + Math.random()*10 -5 + '%';
-    });
-  }, 200);
+  </tr>
+</table>
 
-</script>
+<br><br>
+
+<center><font size="1">© 1997–2025 ClownTherapy Inc.</font></center>
 
 </body>
 </html>
