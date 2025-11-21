@@ -1,446 +1,148 @@
 <!doctype html>
-<html lang="en">
+<html>
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Clown Therapy — Updates</title>
-<style>
-  :root{
-    --bg:#020204;
-    --panel:#071014;
-    --glow:#60ff9b;
-    --accent:#68f;
-    --muted:#9aa6a6;
-    --crt-tint: rgba(96,255,155,0.06);
-    font-family: "SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
-  }
-
-  /* Full-screen PCB-ish background */
-  html,body{height:100%;margin:0;background:radial-gradient(1000px 600px at 10% 10%, #071218 0%, #020204 20%, #000 80%);color:var(--glow);-webkit-font-smoothing:antialiased;}
-  body::before{
-    content:"";
-    position:fixed;inset:0;pointer-events:none;
-    background-image:
-      radial-gradient(circle at 10% 15%, rgba(255,255,255,0.02), transparent 2%),
-      linear-gradient(0deg, rgba(255,255,255,0.01), transparent 5%),
-      repeating-linear-gradient(90deg, rgba(255,255,255,0.01) 0 1px, transparent 1px 20px);
-    mix-blend-mode:screen;opacity:0.6;
-  }
-  /* PCB traces decorative SVG */
-  .pcb {
-    position:fixed; inset:0; z-index:0; opacity:0.14; filter:drop-shadow(0 0 6px rgba(0,0,0,0.6));
-  }
-
-  /* Terminal container */
-  .wrap {
-    position:relative; z-index:2; max-width:980px; margin:28px auto; padding:22px;
-    border-radius:14px; box-shadow: 0 12px 40px rgba(0,0,0,0.8), inset 0 0 80px rgba(0,0,0,0.5);
-    background:
-      linear-gradient(145deg, rgba(6,10,14,0.9), rgba(3,5,8,0.85));
-    border:1px solid rgba(96,255,155,0.06);
-    overflow:hidden;
-  }
-
-  /* Top 'BIOS' bar */
-  .topbar{
-    display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid rgba(255,255,255,0.02);
-    background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
-  }
-  .leds{display:flex;gap:6px}
-  .led{width:10px;height:10px;border-radius:3px;background:#032;box-shadow:0 0 6px rgba(0,0,0,0.6) inset}
-  .led.on{background:var(--glow);box-shadow:0 0 8px rgba(96,255,155,0.5)}
-  .title{flex:1;color:var(--muted);font-size:13px}
-  .bios-version{font-weight:700;color:var(--glow);font-size:12px;letter-spacing:0.4px}
-
-  /* Terminal area */
-  .terminal {
-    margin-top:14px; padding:22px; border-radius:8px; background:
-    linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.15));
-    min-height:540px; position:relative; overflow:auto;
-    box-shadow: inset 0 0 40px rgba(96,255,155,0.03);
-    border:1px solid rgba(255,255,255,0.02);
-  }
-
-  /* CRT / scanlines effect */
-  .terminal::after {
-    content:""; position:absolute; inset:0; pointer-events:none;
-    background-image: linear-gradient(rgba(0,0,0,0.04) 50%, rgba(255,255,255,0.0) 51%);
-    background-size: 100% 2px; mix-blend-mode:overlay; opacity:0.6;
-  }
-  .terminal::before{
-    content:""; position:absolute; inset:0; pointer-events:none;
-    background: radial-gradient(1200px 400px at 50% 10%, rgba(96,255,155,0.03), transparent 20%);
-  }
-
-  /* Content text */
-  .line {font-size:14px;line-height:1.45;color:var(--glow);white-space:pre-wrap;}
-  .muted{color:var(--muted);font-size:13px}
-  .tag{color:#7fffc2;margin-right:6px}
-  .plus{color:#8cff8f}
-  .minus{color:#ff8f8f}
-  .circ{color:#ffd27f}
-
-  /* Log blocks */
-  .log {
-    background: linear-gradient(90deg, rgba(96,255,155,0.02), rgba(104,111,255,0.01));
-    border-radius:8px;padding:12px;margin:8px 0;border:1px solid rgba(255,255,255,0.02);
-  }
-  .log h3{margin:0 0 6px 0;font-size:15px;color:var(--glow)}
-  .log .meta{color:var(--muted);font-size:12px;margin-bottom:8px}
-
-  /* Controls */
-  .controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-  .btn{background:transparent;border:1px solid rgba(255,255,255,0.03);padding:8px 10px;border-radius:6px;color:var(--muted);cursor:pointer;font-size:13px}
-  .btn.active{background:rgba(96,255,155,0.04);color:var(--glow);border-color:rgba(96,255,155,0.08)}
-  .search{margin-left:auto;display:flex;gap:6px;align-items:center}
-  .search input{background:transparent;border:1px solid rgba(255,255,255,0.03);padding:8px 10px;border-radius:6px;color:var(--glow);width:220px}
-
-  /* Terminal prompt */
-  .prompt {
-    display:flex;gap:10px;align-items:flex-start;padding-top:12px;border-top:1px dashed rgba(255,255,255,0.02);margin-top:12px;
-  }
-  .prompt .pfx{min-width:160px;color:var(--muted);font-size:13px}
-  .cmdline{flex:1;position:relative}
-  .cmdline input{
-    width:100%;background:transparent;border:0;color:var(--glow);font-family:inherit;font-size:14px;padding:8px 6px;outline:none;
-  }
-  .hint{position:absolute;right:8px;top:8px;color:rgba(255,255,255,0.06);font-size:12px}
-
-  /* small help area */
-  .help{margin-top:10px;color:var(--muted);font-size:13px}
-
-  /* clickable link style */
-  a.link{color:var(--accent);text-decoration:underline dotted;cursor:pointer}
-
-  /* tiny glowing cursor */
-  .cursor {display:inline-block;width:8px;height:16px;background:var(--glow);vertical-align:middle;margin-left:6px;animation:blink 1s step-end infinite}
-  @keyframes blink {50%{opacity:0}}
-
-  /* collapsible sections */
-  .collapsible {cursor:pointer; user-select:none; display:block}
-  .collapsible .chev{display:inline-block;width:10px;height:10px;border-radius:2px;background:rgba(255,255,255,0.02);text-align:center;margin-right:8px;font-weight:700;color:var(--muted)}
-  .collapsed + .content{display:none}
-
-  /* small responsive tweaks */
-  @media (max-width:640px){
-    .wrap{margin:10px;padding:12px}
-    .topbar{padding:8px}
-    .search input{width:120px}
-    .pfx{min-width:110px}
-  }
-</style>
+  <meta charset="utf-8">
+  <title>Clown Therapy — Updates</title>
 </head>
-<body>
-<!-- decorative PCB SVG -->
-<svg class="pcb" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#0b2" stop-opacity="0.6"/><stop offset="1" stop-color="#06f" stop-opacity="0.25"/></linearGradient>
-  </defs>
-  <g fill="none" stroke="url(#g1)" stroke-width="1">
-    <path d="M40 50 H1160" opacity="0.18"/>
-    <path d="M40 120 H1160" opacity="0.12"/>
-    <path d="M80 200 H1160" opacity="0.10"/>
-    <g opacity="0.09" stroke-linecap="round">
-      <path d="M60 60 L120 120 L60 180" />
-      <path d="M1000 80 L900 140 L1000 200" />
-      <path d="M420 20 L420 200 L540 200 L540 100" />
-      <path d="M720 40 L720 260" />
-    </g>
-    <circle cx="1100" cy="560" r="38" opacity="0.06"/>
-    <rect x="180" y="480" width="160" height="80" rx="6" opacity="0.05"/>
-  </g>
-</svg>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000CC" vlink="#660099" alink="#FF0000">
 
-<div class="wrap" role="region" aria-label="Clown Therapy update terminal">
-  <div class="topbar">
-    <div class="leds"><span class="led on" title="power"></span><span class="led" title="network"></span><span class="led" title="disk"></span></div>
-    <div class="title">Clown Therapy — Update Terminal</div>
-    <div class="bios-version">BIOS v0.7-BETA</div>
-  </div>
+<font face="Georgia, serif">
 
-  <div class="terminal" id="terminal" tabindex="0" aria-live="polite">
-    <div class="controls">
-      <button class="btn active" data-filter="all" id="btn-all">All</button>
-      <button class="btn" data-filter="adds" id="btn-adds">Additions [+]</button>
-      <button class="btn" data-filter="removes" id="btn-removes">Removals [-]</button>
-      <button class="btn" data-filter="changes" id="btn-changes">Changes [o]</button>
+<!-- HEADER -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#FFFFFF">
+  <tr>
+    <td width="1%">
+      <img src="clowntherapy.png" alt="clowntherapy logo" height="80">
+    </td>
+    <td>
+      <font size="6"><b>Clown Therapy — Updates</b></font><br>
+      <font size="2">Changelog & developer notes</font>
+    </td>
+  </tr>
+</table>
 
-      <div class="search">
-        <input id="search" placeholder="search logs (press Enter)" aria-label="search logs"/>
-        <button class="btn" id="btn-clear-search">Clear</button>
-      </div>
-    </div>
+<!-- NAV BAR -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#EEEEEE">
+  <tr>
+    <td>
+      <a href="index.html">Home</a> |
+      <a href="characters.html">Characters</a> |
+      <a href="updates.html">Updates</a>
+    </td>
+  </tr>
+</table>
 
-    <div id="content-area">
-      <!-- main header typed -->
-      <div class="line" id="typed-header"></div>
+<br>
 
-      <div class="log" data-kind="meta">
-        <h3>Clown Therapy Beta <span class="muted" style="font-weight:400"> (finally out of alpha)</span></h3>
-        <div class="meta muted">\\-------------------\\</div>
+<!-- MAIN LAYOUT -->
+<table width="100%" border="0" cellspacing="10" cellpadding="0">
+  <tr>
 
-        <div class="collapsible" id="main-log-toggle" role="button" aria-expanded="true">
-          <span class="chev">▾</span><strong>Beta 0.7 Logs <span class="muted">(!! MAJOR UPDATE !!)</span></strong>
-        </div>
+    <!-- LEFT NAV -->
+    <td width="160" valign="top">
+      <table width="100%" border="1" cellspacing="0" cellpadding="5" bordercolor="#CCCCCC">
+        <tr>
+          <td bgcolor="#EEEEEE"><b>Navigation</b></td>
+        </tr>
+        <tr><td><a href="index.html">Home</a></td></tr>
+        <tr><td><a href="characters.html">Characters</a></td></tr>
+        <tr><td><a href="updates.html">Updates</a></td></tr>
+      </table>
 
-        <div class="content">
-          <div class="line"><span class="tag">Additions = [+]</span> <span class="tag">Removals = [-]</span> <span class="tag">Changes = [o]</span></div>
-          <div style="height:8px"></div>
-          <div class="line"><span class="plus">[+] - Starting UI</span></div>
-          <div class="line"><span class="circ">[o] - Lighting Overhaul</span> <span class="muted">| Soft Lighting --> Realistic Lighting</span></div>
-          <div class="line"><span class="plus">[+] - New room</span> <span class="muted">| Pink Hotel Thing</span></div>
-          <div class="line"><span class="plus">[+] - Attic/Gimp's room</span></div>
-          <div class="line"><span class="circ">[o] - Overhauled kitchen</span></div>
-          <div class="line"><span class="plus">[+] - Updated <a class="link" href="void.html" target="_blank" rel="noopener">void.html</a> (buggy, unfinished, but released)</span></div>
-          <div class="line"><span class="plus">[+] - Added <a class="link" href="https://raw.githubusercontent.com/zyphonzz/clownz/refs/heads/main/log_resources/fanart.png" target="_blank" rel="noopener">fanart</a> to future room (thanks leith)</span></div>
-          <div class="meta muted" style="margin-top:8px">\\-------------------\\</div>
-        </div>
-      </div>
+      <br>
 
-      <div class="log" id="old-logs">
-        <h3>Old update logs:</h3>
-        <div class="muted" style="margin-bottom:8px">Beta 0.6:</div>
-        <div class="line"><span class="circ">[o] - Removed all of the old basement</span></div>
-        <div class="line"><span class="plus">[+] - New overhauled basement (unfinished, but released)</span></div>
+      <table width="100%" border="1" cellspacing="0" cellpadding="5" bordercolor="#CCCCCC">
+        <tr>
+          <td bgcolor="#EEEEEE"><b>Links</b></td>
+        </tr>
+        <tr><td><a href="void.html">void.html</a></td></tr>
+        <tr><td><a href="https://raw.githubusercontent.com/zyphonzz/clownz/refs/heads/main/log_resources/fanart.png" target="_blank">fanart (raw)</a></td></tr>
+      </table>
+    </td>
 
-        <div style="height:10px"></div>
-        <div class="muted">Beta 0.5:</div>
-        <div class="line"><span class="plus">[+] - Fixed light bleeding through walls</span></div>
+    <!-- CENTER CONTENT -->
+    <td valign="top">
 
-        <div style="height:10px"></div>
-        <div class="muted">Beta 0.4:</div>
-        <div class="line">[ no log ]</div>
+      <!-- Current Beta Log -->
+      <table width="100%" border="1" cellspacing="0" cellpadding="8" bordercolor="#0033CC">
+        <tr><td bgcolor="#F5F5FF">
+          <font size="5"><b>Clown Therapy Beta (0.7)</b></font><br><br>
+          <b>(finally out of alpha)</b><br>
+          \-------------------\ <br><br>
 
-        <div style="height:10px"></div>
-        <div class="muted">Beta 0.3:</div>
-        <div class="line"><span class="plus">[+] - Finished shed</span></div>
-        <div class="line"><span class="minus">[-] - Removed Bob (big ahh clown)</span></div>
+          <b>Beta 0.7 Logs (MAJOR UPDATE)</b><br><br>
 
-        <div style="height:10px"></div>
-        <div class="muted">Beta 0.2:</div>
-        <div class="line">[ no log ]</div>
+          Additions = [+] &nbsp; Removals = [-] &nbsp; Changes = [o] <br><br>
 
-        <div style="height:10px"></div>
-        <div class="muted">Beta 0.1 <span class="muted"> (!! MAJOR UPDATE !!)</span>:</div>
-        <div class="line"><strong>FINALLY OUT OF ALPHA B-)</strong></div>
-        <div class="line"><span class="circ">[o] - Overhauled entire house</span></div>
-        <div class="line"><span class="plus">[+] - New terrain</span></div>
-        <div class="line"><span class="circ">[o] - Overhauled lighting</span></div>
-        <div class="line"><span class="minus">[-] - Removed old house</span></div>
-        <div class="line"><span class="minus">[-] - Removed old terrain</span></div>
-        <div class="line"><span class="minus">[-] - Removed entirety of old map</span></div>
-        <div class="line"><span class="circ">[o] - Began work on overhauled basement</span></div>
-        <div class="line"><span class="minus">[-] - Removed pond</span></div>
-        <div class="meta muted" style="margin-top:8px">\\-------------------\\</div>
-      </div>
+          [+] - Starting UI<br>
+          [o] - Lighting Overhaul  | Soft Lighting → Realistic Lighting<br>
+          [+] - New room  | Pink Hotel Thing<br>
+          [+] - Attic / Gimp's room<br>
+          [o] - Overhauled kitchen<br>
+          [+] - Updated <a href="void.html">void.html</a> (buggy, unfinished, but released)<br>
+          [+] - Added <a href="https://raw.githubusercontent.com/zyphonzz/clownz/refs/heads/main/log_resources/fanart.png" target="_blank">fanart</a> to future room (thanks leith)<br>
 
-      <div class="log" id="dev-log">
-        <h3>Most recent dev log:</h3>
-        <div class="line"><em>"So sorry for the delay, we will have it done. it wont be delayed again, but as of now there is no release date."</em></div>
-        <div style="height:8px"></div>
-        <div class="muted">Dev release: <strong>CT 1.0</strong> <span class="muted">(unfinished - ~35% complete.)</span></div>
-      </div>
-    </div>
+        </td></tr>
+      </table>
 
-    <div class="prompt" aria-hidden="false">
-      <div class="pfx muted">clown-ther ~ &gt;</div>
-      <div class="cmdline">
-        <input id="cmd" placeholder='type "help" for commands — try: help / filter adds / clear' autocomplete="off" aria-label="Command line"/>
-        <div class="hint muted">commands: help • clear • filter [adds|removes|changes|all]</div>
-      </div>
-    </div>
+      <br>
 
-    <div class="help muted" id="helptext" style="display:none">
-      <div><strong>Terminal commands</strong></div>
-      <div>help — show this text</div>
-      <div>clear — clear typed output area (doesn't remove static logs)</div>
-      <div>filter adds|removes|changes|all — filter visible log lines</div>
-      <div>search &lt;term&gt; — same as the search box</div>
-    </div>
+      <!-- Old logs -->
+      <table width="100%" border="1" cellspacing="0" cellpadding="8" bordercolor="#CCCCCC">
+        <tr><td bgcolor="#FFFFFF">
+          <font size="4"><b>Old update logs</b></font><br><br>
 
-  </div>
-</div>
+          <b>Beta 0.6:</b><br>
+          [o] - Removed all of the old basement<br>
+          [+] - New overhauled basement (unfinished, but released)<br><br>
 
-<script>
-/* ===== Data is embedded as text nodes above to preserve exact phrasing user provided. ===== */
+          <b>Beta 0.5:</b><br>
+          [+] - Fixed light bleeding through walls<br><br>
 
-/* Helpers */
-const terminal = document.getElementById('terminal');
-const typedHeader = document.getElementById('typed-header');
-const cmdInput = document.getElementById('cmd');
-const searchInput = document.getElementById('search');
-const btnClearSearch = document.getElementById('btn-clear-search');
+          <b>Beta 0.4:</b><br>
+          [ no log ]<br><br>
 
-function typeText(el, text, speed=8, cb){
-  el.textContent = "";
-  let i=0;
-  const t = setInterval(()=>{
-    el.textContent += text.charAt(i++) || "";
-    if(i>text.length){ clearInterval(t); if(cb) cb(); }
-    // vertical scroll
-    terminal.scrollTop = terminal.scrollHeight;
-  }, speed);
-}
+          <b>Beta 0.3:</b><br>
+          [+] - Finished shed<br>
+          [-] - Removed Bob (big ahh clown)<br><br>
 
-/* initial typed header */
-typeText(typedHeader, "Clown Therapy Beta\n(finally out of alpha)\n\\-------------------\\\n", 12, ()=>{
-  // small glow pulsing by toggling class on the led
-  const led = document.querySelector('.leds .led');
-  setInterval(()=>led.classList.toggle('on'), 2500);
-});
+          <b>Beta 0.2:</b><br>
+          [ no log ]<br><br>
 
-/* collapsible behavior */
-document.querySelectorAll('.collapsible').forEach(c=>{
-  c.addEventListener('click', ()=>{
-    const chev = c.querySelector('.chev');
-    const content = c.nextElementSibling;
-    const expanded = content.style.display !== 'none';
-    if(expanded){
-      content.style.display = 'none';
-      chev.textContent = '▸';
-      c.setAttribute('aria-expanded','false');
-    } else {
-      content.style.display = '';
-      chev.textContent = '▾';
-      c.setAttribute('aria-expanded','true');
-    }
-  });
-});
+          <b>Beta 0.1 (MAJOR):</b><br>
+          <strong>FINALLY OUT OF ALPHA B-)</strong><br>
+          [o] - Overhauled entire house<br>
+          [+] - New terrain<br>
+          [o] - Overhauled lighting<br>
+          [-] - Removed old house<br>
+          [-] - Removed old terrain<br>
+          [-] - Removed entirety of old map<br>
+          [o] - Began work on overhauled basement<br>
+          [-] - Removed pond<br>
 
-/* filter buttons */
-function setActiveFilter(filter){
-  document.querySelectorAll('.btn').forEach(b=>b.classList.remove('active'));
-  document.querySelector(`[data-filter="${filter}"]`)?.classList.add('active');
-  applyFilter(filter);
-}
-document.getElementById('btn-all').addEventListener('click', ()=> setActiveFilter('all'));
-document.getElementById('btn-adds').addEventListener('click', ()=> setActiveFilter('adds'));
-document.getElementById('btn-removes').addEventListener('click', ()=> setActiveFilter('removes'));
-document.getElementById('btn-changes').addEventListener('click', ()=> setActiveFilter('changes'));
+        </td></tr>
+      </table>
 
-function applyFilter(filter){
-  const allLines = Array.from(document.querySelectorAll('#content-area .line'));
-  const showAll = (filter === 'all' || !filter);
-  allLines.forEach(line=>{
-    // detect marker presence
-    const txt = line.textContent || "";
-    let show = false;
-    if(showAll) show = true;
-    else if(filter === 'adds') show = txt.includes('[+]');
-    else if(filter === 'removes') show = txt.includes('[-]');
-    else if(filter === 'changes') show = txt.includes('[o]');
-    line.style.display = show ? '' : 'none';
-  });
-}
+      <br>
 
-/* search */
-searchInput.addEventListener('keydown', (e)=>{
-  if(e.key === 'Enter') {
-    doSearch(searchInput.value.trim());
-  }
-});
-btnClearSearch.addEventListener('click', ()=>{
-  searchInput.value = "";
-  doSearch("");
-});
-function doSearch(term){
-  const allLines = Array.from(document.querySelectorAll('#content-area .line'));
-  const q = term.toLowerCase();
-  allLines.forEach(line=>{
-    const txt = (line.textContent||"").toLowerCase();
-    line.style.display = q ? (txt.includes(q) ? '' : 'none') : '';
-  });
-}
+      <!-- Dev log -->
+      <table width="100%" border="1" cellspacing="0" cellpadding="8" bordercolor="#CCCCCC">
+        <tr><td bgcolor="#FFFFFF">
+          <font size="4"><b>Developer note</b></font><br><br>
+          "So sorry for the delay, we will have it done. it wont be delayed again, but as of now there is no release date."<br><br>
+          Dev release: <b>CT 1.0</b> (unfinished - ~35% complete.)<br>
+        </td></tr>
+      </table>
 
-/* terminal commands */
-cmdInput.addEventListener('keydown', (e)=>{
-  if(e.key === 'Enter'){
-    const txt = cmdInput.value.trim();
-    handleCommand(txt);
-    cmdInput.value = "";
-  } else if(e.key === 'ArrowUp' || e.key === 'ArrowDown') {
-    // optional: future history
-  }
-});
+    </td>
+  </tr>
+</table>
 
-function echo(text, cls){
-  const d = document.createElement('div');
-  d.className = 'line';
-  d.textContent = text;
-  document.getElementById('content-area').appendChild(d);
-  terminal.scrollTop = terminal.scrollHeight;
-  return d;
-}
+<br><br>
+<center>
+  <font size="1">© 1994–2025 Clown Therapy Inc. All rights reserved.</font>
+</center>
 
-function handleCommand(input){
-  if(!input) return;
-  const parts = input.split(' ');
-  const cmd = parts[0].toLowerCase();
-  if(cmd === 'help'){
-    document.getElementById('helptext').style.display = '';
-    echo('help: showing command help (also visible above prompt).');
-  } else if (cmd === 'clear'){
-    // remove all dynamically appended .line items that were created by echo
-    const content = document.getElementById('content-area');
-    // preserve original static logs (they have parent .log). We'll remove lines appended at the end.
-    const nodes = Array.from(content.childNodes);
-    // Remove nodes that were appended after initial static blocks (quick heuristic: remove nodes not inside .log)
-    nodes.forEach(n=>{
-      if(n.nodeType===1 && !n.classList.contains('log') && n.id !== 'typed-header') n.remove();
-    });
-    echo('screen cleared (static logs preserved).');
-  } else if (cmd === 'filter'){
-    const arg = parts[1] ? parts[1].toLowerCase() : 'all';
-    if(['adds','removes','changes','all'].includes(arg)){
-      setActiveFilter(arg);
-      echo('filter set to: ' + arg);
-    } else {
-      echo('unknown filter: ' + (arg||'') + ' — try adds/removes/changes/all');
-    }
-  } else if (cmd === 'open' && parts[1] === 'fanart'){
-    window.open('https://raw.githubusercontent.com/zyphonzz/clownz/refs/heads/main/log_resources/fanart.png', '_blank', 'noopener');
-    echo('opening fanart in new tab...');
-  } else if (cmd === 'search'){
-    const q = parts.slice(1).join(' ');
-    searchInput.value = q;
-    doSearch(q);
-    echo('search: ' + q);
-  } else {
-    echo('unknown command: ' + input + ' — type "help" for commands');
-  }
-}
-
-/* keyboard focus & tiny cursor demo */
-terminal.addEventListener('click', ()=> cmdInput.focus());
-cmdInput.addEventListener('focus', ()=> terminal.classList.add('focus'));
-cmdInput.addEventListener('blur', ()=> terminal.classList.remove('focus'));
-
-/* Accessibility: allow quick focus with / key */
-document.addEventListener('keydown', (e)=>{
-  if(e.key === '/' && document.activeElement !== cmdInput){
-    e.preventDefault();
-    cmdInput.focus();
-  }
-});
-
-/* small initial filter state */
-applyFilter('all');
-
-/* simulate subtle terminal flicker */
-(function flicker(){
-  const wraps = document.querySelectorAll('.wrap');
-  let on = true;
-  setInterval(()=>{
-    on = !on;
-    wraps.forEach(w=>{
-      w.style.filter = on ? 'brightness(1)' : 'brightness(0.985) contrast(1.02)';
-    });
-  }, 4100);
-})();
-
-/* allow clicking fanart link in the content (already normal anchor) */
-
-/* End of script */
-</script>
+</font>
 </body>
 </html>
