@@ -1,108 +1,98 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <title>clowntherapy - characters</title>
-  <meta charset="UTF-8">
+<title>Clown Therapy</title>
+<meta charset="UTF-8">
 
-  <style>
-    body {
-      background-color: #E0E0E0;
-      color: black;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, Helvetica, sans-serif;
-    }
-
-    /* Top header bar */
-    .header {
-      background-color: #FFFFFF;
-      border-bottom: 2px solid #0033CC;
-      padding: 10px;
-      display: flex;
-      align-items: center;
-    }
-
-    .header img {
-      height: 55px;
-      margin-right: 15px;
-    }
-
-    .header-title {
-      font-size: 28px;
-      font-weight: bold;
-      color: #0033CC;
-      text-shadow: 1px 1px #AAAAAA;
-    }
-
-    /* Sidebar like old Ebay */
-    .sidebar {
-      width: 180px;
-      background-color: #FFFFFF;
-      border-right: 2px solid #0033CC;
-      padding: 10px;
-      float: left;
-      height: calc(100vh - 100px);
-    }
-
-    .sidebar a {
-      display: block;
-      padding: 6px;
-      background-color: #F5F5F5;
-      color: #0033CC;
-      text-decoration: none;
-      margin-bottom: 6px;
-      border: 1px solid #CCCCCC;
-      font-size: 14px;
-    }
-
-    .sidebar a:hover {
-      background-color: #DDE7FF;
-    }
-
-    .content {
-      margin-left: 200px;
-      padding: 20px;
-    }
-
-    marquee {
-      background: #0033CC;
-      color: white;
-      font-weight: bold;
-      padding: 5px;
-      font-size: 14px;
-    }
-
-    .notice-box {
-      background: white;
-      padding: 15px;
-      border: 2px solid #0033CC;
-      max-width: 600px;
-      font-size: 14px;
-    }
-  </style>
+<!-- Old-web safe font -->
+<font face="Georgia, serif">
 </head>
 
-<body>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000CC" vlink="#660099" alink="#FF0000">
 
-<div class="header">
-  <img src="clowntherapy.png" alt="clowntherapy logo">
-  <div class="header-title">ClownTherapy™ Characters</div>
-</div>
+<!-- HEADER TABLE -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#FFFFFF">
+  <tr>
+    <td width="1%">
+      <img src="ClownTherapy.png" alt="clowntherapy logo" height="80">
+    </td>
+    <td>
+      <font size="6"><b>Clown Therapy Online</b></font><br>
+      <font size="2">Just like home.</font>
+    </td>
+  </tr>
+</table>
 
-<marquee behavior="scroll" direction="right">Meet the ClownTherapy™ cast — browse character files</marquee>
+<!-- NAV BAR -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#EEEEEE">
+  <tr>
+    <td>
+      <a href="index.html">Home</a> |
+      <a href="characters.html">Characters</a> |
+      <a href="updates.html">Updates</a>
+    </td>
+  </tr>
+</table>
 
-<div class="sidebar">
-  <a href="https://clowntherapy.vercel.app">Home</a>
-  <a href="https://clowntherapy.vercel.app/characters/gamemaster.html">Gamemaster</a>
-  <a href="https://clowntherapy.vercel.app/characters/gimp.html">Gimp</a>
-</div>
+<br>
 
-<div class="content">
-  <div class="notice-box">
-    <h2>Characters Page</h2>
-    <p>This area is still under construction — profiles will be added soon.</p>
-  </div>
-</div>
+<!-- MAIN CONTENT LAYOUT -->
+<table width="100%" border="0" cellspacing="10" cellpadding="0">
+  <tr>
+
+    <!-- LEFT SIDEBAR -->
+    <td width="160" valign="top">
+      <table width="100%" border="1" cellspacing="0" cellpadding="5" bordercolor="#CCCCCC">
+        <tr>
+          <td bgcolor="#EEEEEE"><b>Navigation</b></td>
+        </tr>
+        <tr><td><a href="index.html">Home</a></td></tr>
+        <tr><td><a href="characters.html">Characters</a></td></tr>
+        <tr><td><a href="updates.html">Updates</a></td></tr>
+      </table>
+
+      <br>
+
+      <table width="100%" border="1" cellspacing="0" cellpadding="5" bordercolor="#CCCCCC">
+        <tr>
+          <td bgcolor="#EEEEEE"><b>Recommended</b></td>
+        </tr>
+        <tr><td><a href="https://www.roblox.com/games/98172199420305/Clown-Therapy-0">Circus</a></td></tr>
+        <tr><td><a href="characters.html">Characters</a></td></tr>
+      </table>
+    </td>
+
+    <!-- CENTER CONTENT -->
+    <td valign="top">
+      <table border="1" cellspacing="0" cellpadding="10" width="100%" bordercolor="#0033CC">
+        <tr><td bgcolor="#F5F5FF">
+          <font size="5"><b>Characters</b></font><br><br>
+          This section lists the Clown Therapy characters.<br>
+          Some characters are still <b>under construction</b>.<br><br>
+          <hr>
+        </td></tr>
+      </table>
+
+      <br>
+
+      <table border="1" cellspacing="0" cellpadding="10" width="100%" bordercolor="#CCCCCC">
+        <tr><td bgcolor="#FFFFFF">
+          <font size="4"><b>Available Characters</b></font><br><br>
+          <a href="characters/gamemaster.html">Gamemaster</a><br>
+          <a href="characters/gimp.html">Gimp</a><br>
+        </td></tr>
+      </table>
+    </td>
+
+  </tr>
+</table>
+
+<br><br>
+
+<center>
+  <font size="1">© 1994–2025 Clown Therapy Inc. All rights reserved.</font>
+</center>
 
 </body>
 </html>
