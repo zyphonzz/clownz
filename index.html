@@ -1,98 +1,93 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-<title>Clown Therapy</title>
-<meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <title>just like home</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background: black;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
 
-<!-- Old-web safe font -->
-<font face="Georgia, serif">
+    canvas {
+      width: 400px; /* EDIT SIZE HERE */
+      height: auto;
+    }
+  </style>
 </head>
+<body>
+  <canvas id="animCanvas"></canvas>
 
-<body bgcolor="#FFFFFF" text="#000000" link="#0000CC" vlink="#660099" alink="#FF0000">
+  <script>
+    const canvas = document.getElementById('animCanvas');
+    const ctx = canvas.getContext('2d');
 
-<!-- HEADER TABLE -->
-<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#FFFFFF">
-  <tr>
-    <td width="1%">
-      <a href="index.html"><img src="ClownTherapy.png" alt="clowntherapy logo" height="80"></a>
-    </td>
-    <td>
-      <font size="6"><b>Clown Therapy Online</b></font><br>
-      <font size="2">Just like home.</font>
-    </td>
-  </tr>
-</table>
+    // EDITABLE SETTINGS
+    const frameRate = 8; // stop-motion feel (frames per second)
+    const linkURL = 'https://clowntherapy.vercel.app/characters/gamemaster.html';
 
-<!-- NAV BAR -->
-<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#EEEEEE">
-  <tr>
-    <td>
-      <a href="index.html">Home</a> |
-      <a href="characters.html">Characters</a> |
-      <a href="updates.html">Updates</a>
-    </td>
-  </tr>
-</table>
+    const frameSources = [
+      'psub5f-removebg-preview.png',
+      'psub4-removebg-preview.png',
+      'psub3-removebg-preview.png',
+      'psub2-removebg-preview.png',
+      'psub1-removebg-preview.png'
+    ];
 
-<br>
+    const frames = [];
+    let currentFrame = 0;
+    let targetFrame = 0;
+    let lastTime = 0;
 
-<!-- MAIN CONTENT LAYOUT -->
-<table width="100%" border="0" cellspacing="10" cellpadding="0">
-  <tr>
+    // Load images
+    frameSources.forEach(src => {
+      const img = new Image();
+      img.src = src;
+      frames.push(img);
+    });
 
-    <!-- LEFT SIDEBAR -->
-    <td width="160" valign="top">
-      <table width="100%" border="1" cellspacing="0" cellpadding="5" bordercolor="#CCCCCC">
-        <tr>
-          <td bgcolor="#EEEEEE"><b>Navigation</b></td>
-        </tr>
-        <tr><td><a href="index.html">Home</a></td></tr>
-        <tr><td><a href="characters.html">Characters</a></td></tr>
-        <tr><td><a href="updates.html">Updates</a></td></tr>
-      </table>
+    frames[0].onload = () => {
+      canvas.width = frames[0].width;
+      canvas.height = frames[0].height;
+      drawFrame(0);
+    };
 
-      <br>
+    function drawFrame(index) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(frames[index], 0, 0);
+    }
 
-      <table width="100%" border="1" cellspacing="0" cellpadding="5" bordercolor="#CCCCCC">
-        <tr>
-          <td bgcolor="#EEEEEE"><b>Recommended</b></td>
-        </tr>
-        <tr><td><a href="https://www.roblox.com/games/98172199420305/Clown-Therapy-0">Circus</a></td></tr>
-        <tr><td><a href="characters.html">Characters</a></td></tr>
-      </table>
-    </td>
+    function animate(time) {
+      if (time - lastTime > 1000 / frameRate) {
+        if (currentFrame < targetFrame) currentFrame++;
+        if (currentFrame > targetFrame) currentFrame--;
+        drawFrame(currentFrame);
+        lastTime = time;
+      }
+      requestAnimationFrame(animate);
+    }
 
-    <!-- CENTER CONTENT -->
-    <td valign="top">
-      <table border="1" cellspacing="0" cellpadding="10" width="100%" bordercolor="#0033CC">
-        <tr><td bgcolor="#F5F5FF">
-          <font size="5"><b>Welcome to Clown Therapy</b></font><br><br>
-          This site is currently <b>under construction</b>.  
-          Check back for updates as we slowly put the circus together.<br><br>
-          <hr>
-        </td></tr>
-      </table>
+    requestAnimationFrame(animate);
 
-      <br>
+    canvas.addEventListener('mouseenter', () => {
+      targetFrame = frames.length - 1;
+    });
 
-      <table border="1" cellspacing="0" cellpadding="10" width="100%" bordercolor="#CCCCCC">
-        <tr><td bgcolor="#FFFFFF">
-          <font size="4"><b>Recommended Pages</b></font><br><br>
-          <a href="https://zombo.com/">zombo.com</a><br>
-          <a href="https://info.cern.ch/">info.cern.ch</a><br>
-        </td></tr>
-      </table>
-    </td>
+    canvas.addEventListener('mouseleave', () => {
+      targetFrame = 0;
+    });
 
-  </tr>
-</table>
-
-<br><br>
-
-<center>
-  <font size="1">© 1994–2025 Clown Therapy Inc. All rights reserved.</font>
-</center>
-
+    canvas.addEventListener('click', () => {
+      window.location.href = linkURL;
+    });
+  </script>
 </body>
 </html>
