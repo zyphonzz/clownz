@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>just like home</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background: black;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    canvas {
+      width: 400px; /* EDIT SIZE HERE */
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="animCanvas"></canvas>
+
+  <script>
+    const canvas = document.getElementById('animCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // EDITABLE SETTINGS
+    const frameRate = 8; // stop-motion feel (frames per second)
+    const linkURL = 'https://clowntherapy.vercel.app/characters/gamemaster.html';
+
+    const frameSources = [
+      'psub5f-removebg-preview.png',
+      'psub4-removebg-preview.png',
+      'psub3-removebg-preview.png',
+      'psub2-removebg-preview.png',
+      'psub1-removebg-preview.png'
+    ];
+
+    const frames = [];
+    let currentFrame = 0;
+    let targetFrame = 0;
+    let lastTime = 0;
+
+    // Load images
+    frameSources.forEach(src => {
+      const img = new Image();
+      img.src = src;
+      frames.push(img);
+    });
+
+    frames[0].onload = () => {
+      canvas.width = frames[0].width;
+      canvas.height = frames[0].height;
+      drawFrame(0);
+    };
+
+    function drawFrame(index) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(frames[index], 0, 0);
+    }
+
+    function animate(time) {
+      if (time - lastTime > 1000 / frameRate) {
+        if (currentFrame < targetFrame) currentFrame++;
+        if (currentFrame > targetFrame) currentFrame--;
+        drawFrame(currentFrame);
+        lastTime = time;
+      }
+      requestAnimationFrame(animate);
+    }
+
+    requestAnimationFrame(animate);
+
+    canvas.addEventListener('mouseenter', () => {
+      targetFrame = frames.length - 1;
+    });
+
+    canvas.addEventListener('mouseleave', () => {
+      targetFrame = 0;
+    });
+
+    canvas.addEventListener('click', () => {
+      window.location.href = linkURL;
+    });
+  </script>
+</body>
+</html>
