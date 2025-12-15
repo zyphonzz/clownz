@@ -22,97 +22,102 @@
       gap: 120px; /* SPACE BETWEEN PAGES */
     }
 
-    .page {
-      cursor: pointer;
-    }
-
     canvas {
       width: 400px; /* EDIT SIZE HERE */
       height: auto;
+      cursor: pointer;
       display: block;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- LEFT PAGE (ANIMATED) -->
-    <div class="page">
-      <canvas id="animCanvas"></canvas>
-    </div>
+    <!-- GAME MASTER PAGE -->
+    <canvas id="psubCanvas"></canvas>
 
-    <!-- RIGHT PAGE (EMPTY / FUTURE USE) -->
-    <div class="page">
-      <canvas id="emptyCanvas" width="400" height="600"></canvas>
-    </div>
+    <!-- GIMP PAGE -->
+    <canvas id="fsubCanvas"></canvas>
   </div>
 
   <script>
-    const canvas = document.getElementById('animCanvas');
-    const ctx = canvas.getContext('2d');
-
-    // EDITABLE SETTINGS
     const frameRate = 8; // stop-motion feel
-    const linkURL = 'https://clowntherapy.vercel.app/characters/gimp.html';
 
-    const frameSources = [
-      'fsub5f-removebg-preview.png',
-      'fsub4-removebg-preview.png',
-      'fsub3-removebg-preview.png',
-      'fsub2-removebg-preview.png',
-      'fsub1-removebg-preview.png'
-    ];
+    function setupAnimatedCanvas({ canvasId, framesSrc, linkURL }) {
+      const canvas = document.getElementById(canvasId);
+      const ctx = canvas.getContext('2d');
 
-    const frames = [];
-    let currentFrame = 0;
-    let targetFrame = 0;
-    let lastTime = 0;
+      const frames = [];
+      let currentFrame = 0;
+      let targetFrame = 0;
+      let lastTime = 0;
 
-    // Load images
-    frameSources.forEach(src => {
-      const img = new Image();
-      img.src = src;
-      frames.push(img);
-    });
+      framesSrc.forEach(src => {
+        const img = new Image();
+        img.src = src;
+        frames.push(img);
+      });
 
-    frames[0].onload = () => {
-      canvas.width = frames[0].width;
-      canvas.height = frames[0].height;
-      drawFrame(0);
-    };
+      frames[0].onload = () => {
+        canvas.width = frames[0].width;
+        canvas.height = frames[0].height;
+        draw();
+      };
 
-    function drawFrame(index) {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(frames[index], 0, 0);
-    }
-
-    function animate(time) {
-      if (time - lastTime > 1000 / frameRate) {
-        if (currentFrame < targetFrame) currentFrame++;
-        if (currentFrame > targetFrame) currentFrame--;
-        drawFrame(currentFrame);
-        lastTime = time;
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(frames[currentFrame], 0, 0);
       }
+
+      function animate(time) {
+        if (time - lastTime > 1000 / frameRate) {
+          if (currentFrame < targetFrame) currentFrame++;
+          if (currentFrame > targetFrame) currentFrame--;
+          draw();
+          lastTime = time;
+        }
+        requestAnimationFrame(animate);
+      }
+
       requestAnimationFrame(animate);
+
+      canvas.addEventListener('mouseenter', () => {
+        targetFrame = frames.length - 1;
+      });
+
+      canvas.addEventListener('mouseleave', () => {
+        targetFrame = 0;
+      });
+
+      canvas.addEventListener('click', () => {
+        window.location.href = linkURL;
+      });
     }
 
-    requestAnimationFrame(animate);
-
-    canvas.addEventListener('mouseenter', () => {
-      targetFrame = frames.length - 1;
+    // LEFT PAGE — GAME MASTER
+    setupAnimatedCanvas({
+      canvasId: 'psubCanvas',
+      linkURL: 'https://clowntherapy.vercel.app/characters/gamemaster.html',
+      framesSrc: [
+        'psub5f-removebg-preview.png',
+        'psub4-removebg-preview.png',
+        'psub3-removebg-preview.png',
+        'psub2-removebg-preview.png',
+        'psub1-removebg-preview.png'
+      ]
     });
 
-    canvas.addEventListener('mouseleave', () => {
-      targetFrame = 0;
+    // RIGHT PAGE — GIMP
+    setupAnimatedCanvas({
+      canvasId: 'fsubCanvas',
+      linkURL: 'https://clowntherapy.vercel.app/characters/gimp.html',
+      framesSrc: [
+        'fsub5f-removebg-preview.png',
+        'fsub4-removebg-preview.png',
+        'fsub3-removebg-preview.png',
+        'fsub2-removebg-preview.png',
+        'fsub1-removebg-preview.png'
+      ]
     });
-
-    canvas.addEventListener('click', () => {
-      window.location.href = linkURL;
-    });
-
-    // Right page stays black intentionally
-    const emptyCtx = document.getElementById('emptyCanvas').getContext('2d');
-    emptyCtx.fillStyle = 'black';
-    emptyCtx.fillRect(0, 0, 400, 600);
   </script>
 </body>
 </html>
